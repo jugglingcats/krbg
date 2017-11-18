@@ -12,14 +12,13 @@ export type ValidatorProps = {
 
 export type VerifiedComponentProps = ControllerProps & RouteComponentProps<ValidatorProps>;
 
+type VerifiedComponentState = { verified: boolean }
+
 export function validatedComponent<P>(Component: WrappedHigherOrderComponent<P, VerifiedComponentProps>, requiredRole?: string): React.ComponentClass<P> {
-    return inject("controller")(withRouter(class C extends React.Component<P & VerifiedComponentProps, {verified: boolean}> {
-        constructor() {
-            super();
-            this.state = {
-                verified: false
-            };
-        }
+    return inject("controller")(withRouter(class C extends React.Component<P & VerifiedComponentProps, VerifiedComponentState> {
+        state: VerifiedComponentState = {
+            verified: false
+        };
 
         componentDidMount() {
             this.props.controller.verify(this.props.match.params.key, requiredRole).then((v: VerifiedPageState) => {

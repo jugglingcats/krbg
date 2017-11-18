@@ -19,18 +19,13 @@ export type AppState = {
 @inject("controller")
 @withRouter
 export class SignUp extends React.Component<ControllerProps & RouteComponentProps<any>, AppState> {
-    constructor() {
-        super();
-        this.state = {
-            username: "",
-            email: "",
-            emailExists: false
-        }
-    }
+    state: AppState = {
+        username: "",
+        email: "",
+        emailExists: false
+    };
 
-    signUp(e:any) {
-        // e.preventDefault();
-
+    signUp() {
         this.setState({
             emailExists: false
         });

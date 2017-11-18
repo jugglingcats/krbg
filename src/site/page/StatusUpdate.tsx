@@ -1,12 +1,12 @@
 import * as React from "react";
-import {observer} from "mobx-react";
-import {RouteComponentProps} from "react-router";
-import {Link} from "react-router-dom";
-import {VerifiedComponentProps} from "../component/KeyVerification";
-import {ScaleLoader} from "react-spinners";
-import {AttendanceOption} from "../../common/AttendanceOption";
+import { observer } from "mobx-react";
+import { RouteComponentProps } from "react-router";
+import { Link } from "react-router-dom";
+import { VerifiedComponentProps } from "../component/KeyVerification";
+import { ScaleLoader } from "react-spinners";
+import { AttendanceOption } from "../../common/AttendanceOption";
 
-import {TimeOptionSelection} from "../component/TimeOptionSelection";
+import { TimeOptionSelection } from "../component/TimeOptionSelection";
 
 type StatusUpdateProps = {
     option: AttendanceOption
@@ -18,12 +18,9 @@ type StatusUpdateState = {
 
 @observer
 export class StatusUpdate extends React.Component<VerifiedComponentProps & RouteComponentProps<StatusUpdateProps>, StatusUpdateState> {
-    constructor() {
-        super();
-        this.state = {
-            confirmed: false
-        }
-    }
+    state: StatusUpdateState = {
+        confirmed: false
+    };
 
     componentDidMount() {
         const option = this.props.match.params.option;
@@ -45,7 +42,7 @@ export class StatusUpdate extends React.Component<VerifiedComponentProps & Route
                     <p className="App-intro">
                         Hold tight {userProfile.username}, storing your selection!
                     </p>
-                    <ScaleLoader color={'blue'} height={12} loading={true}/>
+                    <ScaleLoader color={"blue"} height={12} loading={true}/>
                 </div>
             );
         }
@@ -53,15 +50,14 @@ export class StatusUpdate extends React.Component<VerifiedComponentProps & Route
         return (
             <section>
                 <p className="App-intro">
-                    {option == "yes" && <span>You've confirmed you will come this week!</span>}
-                    {option == "no" && <span>Sorry you can't make it this week!</span>}
+                    {option === "yes" && <span>You've confirmed you will come this week!</span>}
+                    {option === "no" && <span>Sorry you can't make it this week!</span>}
                 </p>
 
                 {
-                    option === "yes" && <TimeOptionSelection controller={this.props.controller}/>
-                }
+                    option === "yes" && <TimeOptionSelection controller={this.props.controller}/>}
                 <p>
-                    <Link className="pure-button pure-button-primary" to={'/confirmed/' + this.props.match.params.key}>
+                    <Link className="pure-button pure-button-primary" to={"/confirmed/" + this.props.match.params.key}>
                         See who else is coming
                     </Link>
                 </p>
