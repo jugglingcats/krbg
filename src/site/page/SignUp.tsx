@@ -1,0 +1,140 @@
+import * as React from 'react';
+import {Link, withRouter} from "react-router-dom";
+import {ScaleLoader} from 'react-spinners';
+import {RouteComponentProps} from "react-router";
+import {ControllerProps} from "../AppController";
+import {inject} from "mobx-react";
+
+const Recaptcha = require("react-recaptcha");
+
+export type AppState = {
+    username?: string,
+    email?: string,
+    recaptcha?: string,
+    requestEmail?: boolean;
+    emailExists: boolean,
+    emailResendToken?: string
+};
+
+@inject("controller")
+@withRouter
+export class SignUp extends React.Component<ControllerProps & RouteComponentProps<any>, AppState> {
+    constructor() {
+        super();
+        this.state = {
+            username: "",
+            email: "",
+            emailExists: false
+        }
+    }
+
+    signUp(e:any) {
+        // e.preventDefault();
+
+        this.setState({
+            emailExists: false
+        });
+        this.props.controller.signup({
+            username: this.state.username,
+            email: this.state.email,
+            recaptcha: this.state.recaptcha
+        }).then(r => {
+            if (r.exists) {
+                this.setState({
+                    emailExists: true,
+                    emailResendToken: r.token
+                })
+            } else {
+                return this.props.history.push("/welcome/" + r.profile!.verificationKey);
+            }
+        })
+    }
+
+    resendEmail() {
+        this.setState({
+            requestEmail: true
+        });
+        this.props.controller.requestEmail({
+            email: this.state.email,
+            token: this.state.emailResendToken
+        }).then(() => {
+            return this.props.history.push("/resentEmail");
+        })
+    }
+
+    updateEmail(e: any) {
+        this.setState({
+            emailExists: false,
+            email: e.target.value as string,
+        });
+    }
+
+    updateUsername(e: any) {
+        this.setState({
+            username: e.target.value as string
+        });
+    }
+
+    verifyCallback(e: string) {
+        this.setState({recaptcha: e});
+    }
+
+    render() {
+        const updateUsername = this.updateUsername.bind(this);
+        const updateEmail = this.updateEmail.bind(this);
+        const resendEmail = this.resendEmail.bind(this);
+        const signUp = this.signUp.bind(this);
+        const verifyCallback = this.verifyCallback.bind(this);
+        const callback = (p: any) => {
+        };
+
+        return (
+            <div>
+                <p className="App-intro">
+                    Welcome to Kensal Rise Backgammon. The club meets every Thursday at The Island pub from 8.30pm.
+                </p>
+                <p>
+                    To register your interest please enter your name and email below. We send weekly reminder emails to members.
+                </p>
+                <form className="pure-form pure-form-stacked">
+                    <fieldset>
+                        <legend>Sign up to Kensal Rise Backgammon</legend>
+
+                        <label htmlFor="username">Name</label>
+                        <input id="username" type="text" placeholder="Enter your name" required
+                               onChange={updateUsername} value={this.state.username}/>
+
+                        <label htmlFor="email">Email</label>
+                        <input id="email" type="email" placeholder="Enter your email"
+                               onChange={updateEmail} value={this.state.email}/>
+
+                        {
+                            this.state.emailExists && <div className="Error">
+                                This email is already registered. Enter a different email or&nbsp;
+                                <a href='#' onClick={resendEmail}>request an email</a> you can then use to manage your profile.
+                            </div>
+                        }
+
+                        {this.state.requestEmail || <div className="Recaptcha">
+                            <Recaptcha render="explicit" onloadCallback={callback} verifyCallback={verifyCallback}
+                                       sitekey="6LeVoTMUAAAAAEsZ1Pr5kaTV-18vSfm1jsB04nbQ"/>
+                        </div>}
+
+
+                        <button type="button" className="pure-button pure-button-primary" onClick={signUp}
+                                disabled={this.state.email == undefined || this.state.recaptcha == undefined}>
+                            {
+                                this.props.controller.busy &&
+                                <ScaleLoader color={'white'} height={12} loading={true}/>
+                            }
+                            {
+                                this.props.controller.busy ||
+                                <span>Sign Up!</span>
+                            }
+                        </button>
+                    </fieldset>
+                </form>
+            </div>
+        );
+    }
+}

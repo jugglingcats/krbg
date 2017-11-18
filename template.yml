@@ -9,11 +9,12 @@ Parameters:
     Description: AWS CodeStar projectID used to associate new resources to team members
 
 Resources:
-  GetHelloWorld:
+  GetHome:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: index.get
-      Runtime: nodejs4.3
+      Handler: build-api/handler.get
+      Runtime: nodejs6.10
+      Timeout: 10
       Role:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
@@ -23,3 +24,315 @@ Resources:
           Properties:
             Path: /
             Method: get
+        ProxyApiGreedy:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: GET
+
+  GetManifest:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build-api/handler.manifest
+      Runtime: nodejs6.10
+      Timeout: 10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /manifest.json
+            Method: get
+
+  GetTurnout:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build-api/handler.Turnout
+      Runtime: nodejs6.10
+      Timeout: 10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /api/turnout
+            Method: get
+      Environment:
+        Variables:
+          DEBUG: "false"
+
+  CronBeginWeek:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build-api/handler.CronBeginWeek
+      Runtime: nodejs6.10
+      Timeout: 30
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Environment:
+        Variables:
+          SITE_URL: https://krbg.uk
+
+  SendBeginWeekEmail:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build-api/handler.BeginWeek
+      Runtime: nodejs6.10
+      Timeout: 10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /api/sendBeginWeekEmail
+            Method: post
+      Environment:
+        Variables:
+          SITE_URL: https://krbg.uk
+
+  CronRollUsers:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build-api/handler.CronRollUsers
+      Runtime: nodejs6.10
+      Timeout: 30
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+
+  RollUsers:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build-api/handler.RollUsers
+      Runtime: nodejs6.10
+      Timeout: 30
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /api/rollUsers
+            Method: post
+
+
+  CronSendReminderEmail:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build-api/handler.CronSendReminderEmail
+      Runtime: nodejs6.10
+      Timeout: 30
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Environment:
+        Variables:
+          SITE_URL: https://krbg.uk
+
+  SendReminderEmail:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build-api/handler.SendReminder
+      Runtime: nodejs6.10
+      Timeout: 10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /api/sendReminderEmail
+            Method: post
+      Environment:
+        Variables:
+          SITE_URL: https://krbg.uk
+
+  CronSendFinalEmail:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build-api/handler.CronSendFinalEmail
+      Runtime: nodejs6.10
+      Timeout: 30
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Environment:
+        Variables:
+          SITE_URL: https://krbg.uk
+
+  SendFinalEmail:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build-api/handler.SendFinalEmail
+      Runtime: nodejs6.10
+      Timeout: 10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /api/sendFinalEmail
+            Method: post
+      Environment:
+        Variables:
+          SITE_URL: https://krbg.uk
+
+  SendCustomEmail:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build-api/handler.SendCustomEmail
+      Runtime: nodejs6.10
+      Timeout: 30
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /api/sendCustomEmail
+            Method: post
+      Environment:
+        Variables:
+          SITE_URL: https://krbg.uk
+
+  CheckEmailByKey:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build-api/handler.CheckEmailByKey
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: nodejs6.10
+      Timeout: 10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /api/verify
+            Method: get
+
+  PostSignUp:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build-api/handler.Signup
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: nodejs6.10
+      Timeout: 10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /api/signup
+            Method: post
+      Environment:
+        Variables:
+          RECAPTCHA: "true"
+          SKIP_PUT: "false"
+          SITE_URL: https://krbg.uk
+
+  PostResendEmail:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build-api/handler.ResendEmail
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: nodejs6.10
+      Timeout: 10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /api/resendEmail
+            Method: post
+      Environment:
+        Variables:
+          SITE_URL: https://krbg.uk
+
+  PostUnsubscribe:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build-api/handler.Unsubscribe
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: nodejs6.10
+      Timeout: 10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /api/unsubscribe
+            Method: post
+      Environment:
+        Variables:
+          SITE_URL: https://krbg.uk
+
+  PostStoreOption:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build-api/handler.StoreOption
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: nodejs6.10
+      Timeout: 10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /api/storeOption
+            Method: post
+
+  PostStoreTimeOption:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build-api/handler.StoreTimeOption
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: nodejs6.10
+      Timeout: 10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /api/storeTimeOption
+            Method: post
+
+  PostStoreHoliday:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build-api/handler.StoreHoliday
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: nodejs6.10
+      Timeout: 10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /api/storeHoliday
+            Method: post

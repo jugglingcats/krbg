@@ -1,0 +1,25 @@
+{
+  "PostSignUp": {
+    "RECAPTCHA": "false",
+    "SKIP_PUT": "false",
+    "SITE_URL": "http://localhost:3001"
+  },
+  "PostResendEmail": {
+    "SITE_URL": "http://localhost:3001"
+  },
+  "SendBeginWeekEmail": {
+    "SITE_URL": "http://localhost:3001"
+  },
+  "SendReminderEmail": {
+    "SITE_URL": "http://localhost:3001"
+  },
+  "SendFinalEmail": {
+    "SITE_URL": "http://localhost:3001"
+  },
+  "GetTurnout": {
+    "DEBUG": "true"
+  },
+  "test": {
+    "YYYYYYY": "XXXXXX"
+  }
+}
