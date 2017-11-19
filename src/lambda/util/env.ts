@@ -20,10 +20,22 @@ export class Environment {
         return base + "/" + page;
     }
 
-    static get(param: string): string {
+    static get jwtSecret(): string {
+        return Environment.get("JWT_SECRET", "*** JwtSecret Parameter (Deploy GenerateChangeSet) ***");
+    }
+
+    static get recaptchaSecret(): string {
+        return Environment.get("RECAPTCHA_SECRET", "*** RecaptchaSecret Parameter (Deploy GenerateChangeSet) ***");
+    }
+
+    static get(param: string, defaultValue?: string): string {
         let value = process.env[param];
         if (!value) {
-            throw new Error("Env variable not defined: " + param);
+            if (!defaultValue) {
+                throw new Error("Env variable not defined: " + param);
+            }
+            value = defaultValue;
+            console.log("Used default value for environment variable: ", param, defaultValue);
         }
         return value;
     }

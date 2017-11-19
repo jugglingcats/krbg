@@ -140,7 +140,7 @@ function buildResponse(statusCode, info) {
 const urllib = __webpack_require__(14);
 const util = __webpack_require__(13);
 const fs = __webpack_require__(17);
-const fetch = __webpack_require__(18);
+const fetch = __webpack_require__(19);
 
 /**
  * Parses connection url to a structured configuration object
@@ -726,7 +726,7 @@ module.exports = emptyFunction;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_html_email___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_html_email__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__env__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__env__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_utils__ = __webpack_require__(113);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -1093,6 +1093,70 @@ module.exports = require("fs");
 
 /***/ }),
 /* 18 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Environment; });
+var Environment = (function () {
+    function Environment() {
+    }
+    Object.defineProperty(Environment, "debug", {
+        get: function () {
+            return Boolean(process.env.DEBUG).valueOf();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Environment, "validateRecaptcha", {
+        get: function () {
+            return Environment.is("RECAPTCHA");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Environment.is = function (param) {
+        return process.env[param] === "true";
+    };
+    Environment.siteLink = function (page) {
+        var base = process.env["SITE_URL"];
+        if (!base) {
+            console.log("No SITE_URL environent var -- did you forget to add in template.yml?");
+            throw "No SITE_URL environent var -- did you forget to add in template.yml?";
+        }
+        return base + "/" + page;
+    };
+    Object.defineProperty(Environment, "jwtSecret", {
+        get: function () {
+            return Environment.get("JWT_SECRET", "*** JwtSecret Parameter (Deploy GenerateChangeSet) ***");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Environment, "recaptchaSecret", {
+        get: function () {
+            return Environment.get("RECAPTCHA_SECRET", "*** RecaptchaSecret Parameter (Deploy GenerateChangeSet) ***");
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Environment.get = function (param, defaultValue) {
+        var value = process.env[param];
+        if (!value) {
+            if (!defaultValue) {
+                throw new Error("Env variable not defined: " + param);
+            }
+            value = defaultValue;
+            console.log("Used default value for environment variable: ", param, defaultValue);
+        }
+        return value;
+    };
+    return Environment;
+}());
+
+
+
+/***/ }),
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1360,7 +1424,7 @@ function fetch(url, options) {
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1986,7 +2050,7 @@ module.exports = {
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2054,7 +2118,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = warning;
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2077,7 +2141,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = emptyObject;
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2100,7 +2164,7 @@ exports.default = function (props) {
 };
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(115).default;
@@ -2108,13 +2172,13 @@ module.exports.default = module.exports;
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports) {
 
 module.exports = require("buffer");
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports) {
 
 var JsonWebTokenError = function (message, error) {
@@ -2131,52 +2195,6 @@ JsonWebTokenError.prototype = Object.create(Error.prototype);
 JsonWebTokenError.prototype.constructor = JsonWebTokenError;
 
 module.exports = JsonWebTokenError;
-
-
-/***/ }),
-/* 26 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Environment; });
-var Environment = (function () {
-    function Environment() {
-    }
-    Object.defineProperty(Environment, "debug", {
-        get: function () {
-            return Boolean(process.env.DEBUG).valueOf();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Environment, "validateRecaptcha", {
-        get: function () {
-            return Environment.is("RECAPTCHA");
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Environment.is = function (param) {
-        return process.env[param] === "true";
-    };
-    Environment.siteLink = function (page) {
-        var base = process.env["SITE_URL"];
-        if (!base) {
-            console.log("No SITE_URL environent var -- did you forget to add in template.yml?");
-            throw "No SITE_URL environent var -- did you forget to add in template.yml?";
-        }
-        return base + "/" + page;
-    };
-    Environment.get = function (param) {
-        var value = process.env[param];
-        if (!value) {
-            throw new Error("Env variable not defined: " + param);
-        }
-        return value;
-    };
-    return Environment;
-}());
-
 
 
 /***/ }),
@@ -3819,7 +3837,7 @@ module.exports = ReactPropTypesSecret;
 
 if (process.env.NODE_ENV !== 'production') {
   var invariant = __webpack_require__(15);
-  var warning = __webpack_require__(20);
+  var warning = __webpack_require__(21);
   var ReactPropTypesSecret = __webpack_require__(30);
   var loggedTypeFailures = {};
 }
@@ -3901,7 +3919,7 @@ exports.createVerify = function createVerify(opts) {
 /***/ (function(module, exports, __webpack_require__) {
 
 /* eslint-disable node/no-deprecated-api */
-var buffer = __webpack_require__(24)
+var buffer = __webpack_require__(25)
 var Buffer = buffer.Buffer
 
 // alternative to using Object.keys for old browsers
@@ -6191,11 +6209,11 @@ const fs = __webpack_require__(17);
 const punycode = __webpack_require__(41);
 const PassThrough = __webpack_require__(0).PassThrough;
 
-const mimeFuncs = __webpack_require__(19);
+const mimeFuncs = __webpack_require__(20);
 const qp = __webpack_require__(43);
 const base64 = __webpack_require__(42);
 const addressparser = __webpack_require__(75);
-const fetch = __webpack_require__(18);
+const fetch = __webpack_require__(19);
 const LastNewline = __webpack_require__(76);
 
 /**
@@ -7803,7 +7821,7 @@ module.exports = require("tls");
 
 
 const Stream = __webpack_require__(0).Stream;
-const fetch = __webpack_require__(18);
+const fetch = __webpack_require__(19);
 const crypto = __webpack_require__(6);
 const shared = __webpack_require__(3);
 
@@ -8314,7 +8332,7 @@ var _PropTypes = __webpack_require__(8);
 
 var _PropTypes2 = _interopRequireDefault(_PropTypes);
 
-var _includeDataProps = __webpack_require__(22);
+var _includeDataProps = __webpack_require__(23);
 
 var _includeDataProps2 = _interopRequireDefault(_includeDataProps);
 
@@ -8439,7 +8457,7 @@ module.exports = {
   decode: __webpack_require__(53),
   verify: __webpack_require__(121),
   sign: __webpack_require__(123),
-  JsonWebTokenError: __webpack_require__(25),
+  JsonWebTokenError: __webpack_require__(26),
   NotBeforeError: __webpack_require__(57),
   TokenExpiredError: __webpack_require__(58),
 };
@@ -8547,7 +8565,7 @@ module.exports = DataStream;
 /***/ (function(module, exports, __webpack_require__) {
 
 var bufferEqual = __webpack_require__(117);
-var base64url = __webpack_require__(23);
+var base64url = __webpack_require__(24);
 var Buffer = __webpack_require__(33).Buffer;
 var crypto = __webpack_require__(6);
 var formatEcdsa = __webpack_require__(118);
@@ -8678,7 +8696,7 @@ module.exports = function jwa(algorithm) {
 /***/ (function(module, exports, __webpack_require__) {
 
 /*global module*/
-var Buffer = __webpack_require__(24).Buffer;
+var Buffer = __webpack_require__(25).Buffer;
 
 module.exports = function toString(obj) {
   if (typeof obj === 'string')
@@ -8693,7 +8711,7 @@ module.exports = function toString(obj) {
 /* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var JsonWebTokenError = __webpack_require__(25);
+var JsonWebTokenError = __webpack_require__(26);
 
 var NotBeforeError = function (message, date) {
   JsonWebTokenError.call(this, message);
@@ -8711,7 +8729,7 @@ module.exports = NotBeforeError;
 /* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var JsonWebTokenError = __webpack_require__(25);
+var JsonWebTokenError = __webpack_require__(26);
 
 var TokenExpiredError = function (message, expiredAt) {
   JsonWebTokenError.call(this, message);
@@ -8999,7 +9017,7 @@ function SendFinalEmail(event, context) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_dynamodb_lib__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_response_lib__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util_recaptcha__ = __webpack_require__(68);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util_env__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util_env__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__util_EmailService__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_jsonwebtoken__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_jsonwebtoken___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_jsonwebtoken__);
@@ -9011,6 +9029,7 @@ function SendFinalEmail(event, context) {
 
 var uuid = __webpack_require__(131);
 function Signup(event, context) {
+    var jwtSecret = __WEBPACK_IMPORTED_MODULE_3__util_env__["a" /* Environment */].jwtSecret;
     console.log("Request to add: ", event.body);
     var data = JSON.parse(event.body);
     var timestamp = new Date().getTime();
@@ -9048,7 +9067,7 @@ function Signup(event, context) {
     }).catch(function (e) {
         console.log("Call failed: ", e);
         if (e.code === "ConditionalCheckFailedException") {
-            var token = __WEBPACK_IMPORTED_MODULE_5_jsonwebtoken__["sign"]({}, "oneflewoverthecuckoosnest", { expiresIn: '1h' });
+            var token = __WEBPACK_IMPORTED_MODULE_5_jsonwebtoken__["sign"]({}, jwtSecret, { expiresIn: '1h' });
             context.succeed(Object(__WEBPACK_IMPORTED_MODULE_1__util_response_lib__["a" /* failure */])({ token: token }, 409));
         }
         else {
@@ -9066,7 +9085,7 @@ function Signup(event, context) {
 /* harmony export (immutable) */ __webpack_exports__["a"] = validateRecaptcha;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_https__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_https___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_https__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__env__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__env__ = __webpack_require__(18);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -9106,13 +9125,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 
 function validateRecaptcha(code) {
     return __awaiter(this, void 0, void 0, function () {
-        var verificationUrl;
+        var recaptchaSecret, verificationUrl;
         return __generator(this, function (_a) {
             if (!__WEBPACK_IMPORTED_MODULE_1__env__["a" /* Environment */].validateRecaptcha) {
                 console.log("Recaptcha check skipped in config");
                 return [2 /*return*/, Promise.resolve()];
             }
-            verificationUrl = "https://www.google.com/recaptcha/api/siteverify?secret=6LeVoTMUAAAAANnCO8aq7L-ey2oPVw6dBLQXBlOj&response=" + code;
+            recaptchaSecret = __WEBPACK_IMPORTED_MODULE_1__env__["a" /* Environment */].recaptchaSecret;
+            verificationUrl = "https://www.google.com/recaptcha/api/siteverify?secret=" + recaptchaSecret + "&response=" + code;
             console.log("Checking recaptcha...", code);
             return [2 /*return*/, new Promise(function (resolve, reject) {
                     __WEBPACK_IMPORTED_MODULE_0_https__["get"](verificationUrl, function (res) {
@@ -9165,7 +9185,7 @@ const SendmailTransport = __webpack_require__(89);
 const StreamTransport = __webpack_require__(91);
 const JSONTransport = __webpack_require__(92);
 const SESTransport = __webpack_require__(93);
-const fetch = __webpack_require__(18);
+const fetch = __webpack_require__(19);
 const packageData = __webpack_require__(5);
 
 const ETHEREAL_API = 'https://api.nodemailer.com';
@@ -10025,7 +10045,7 @@ module.exports = Cookies;
 
 
 const MimeNode = __webpack_require__(39);
-const mimeFuncs = __webpack_require__(19);
+const mimeFuncs = __webpack_require__(20);
 
 /**
  * Creates the object for composing a MimeNode instance out from the mail options
@@ -11488,7 +11508,7 @@ module.exports = RelaxedBody;
 
 
 const punycode = __webpack_require__(41);
-const mimeFuncs = __webpack_require__(19);
+const mimeFuncs = __webpack_require__(20);
 const crypto = __webpack_require__(6);
 
 /**
@@ -11751,7 +11771,7 @@ module.exports = httpProxyClient;
 
 const shared = __webpack_require__(3);
 const MimeNode = __webpack_require__(39);
-const mimeFuncs = __webpack_require__(19);
+const mimeFuncs = __webpack_require__(20);
 
 class MailMessage {
     constructor(mailer, data) {
@@ -14317,7 +14337,7 @@ exports.default = {
 
 var emptyFunction = __webpack_require__(10);
 var invariant = __webpack_require__(15);
-var warning = __webpack_require__(20);
+var warning = __webpack_require__(21);
 var assign = __webpack_require__(16);
 
 var ReactPropTypesSecret = __webpack_require__(30);
@@ -15088,7 +15108,7 @@ module.exports = {"direction":{"outlook":true,"outlook-legacy":true,"apple-ios":
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-var m=__webpack_require__(16),n=__webpack_require__(21),p=__webpack_require__(10);
+var m=__webpack_require__(16),n=__webpack_require__(22),p=__webpack_require__(10);
 function q(a){for(var b=arguments.length-1,e="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)e+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(e+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}
 var r={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}};function t(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||r}t.prototype.isReactComponent={};t.prototype.setState=function(a,b){"object"!==typeof a&&"function"!==typeof a&&null!=a?q("85"):void 0;this.updater.enqueueSetState(this,a,b,"setState")};t.prototype.forceUpdate=function(a){this.updater.enqueueForceUpdate(this,a,"forceUpdate")};
 function u(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||r}function v(){}v.prototype=t.prototype;var w=u.prototype=new v;w.constructor=u;m(w,t.prototype);w.isPureReactComponent=!0;function x(a,b,e){this.props=a;this.context=b;this.refs=n;this.updater=e||r}var y=x.prototype=new v;y.constructor=x;m(y,t.prototype);y.unstable_isAsyncReactComponent=!0;y.render=function(){return this.props.children};
@@ -15126,8 +15146,8 @@ if (process.env.NODE_ENV !== "production") {
 
 var _assign = __webpack_require__(16);
 var invariant = __webpack_require__(15);
-var emptyObject = __webpack_require__(21);
-var warning = __webpack_require__(20);
+var emptyObject = __webpack_require__(22);
+var warning = __webpack_require__(21);
 var emptyFunction = __webpack_require__(10);
 var checkPropTypes = __webpack_require__(31);
 
@@ -16597,7 +16617,7 @@ var _PropTypes = __webpack_require__(8);
 
 var _PropTypes2 = _interopRequireDefault(_PropTypes);
 
-var _includeDataProps = __webpack_require__(22);
+var _includeDataProps = __webpack_require__(23);
 
 var _includeDataProps2 = _interopRequireDefault(_includeDataProps);
 
@@ -16657,7 +16677,7 @@ var _PropTypes = __webpack_require__(8);
 
 var _PropTypes2 = _interopRequireDefault(_PropTypes);
 
-var _includeDataProps = __webpack_require__(22);
+var _includeDataProps = __webpack_require__(23);
 
 var _includeDataProps2 = _interopRequireDefault(_includeDataProps);
 
@@ -16727,7 +16747,7 @@ var _PropTypes = __webpack_require__(8);
 
 var _PropTypes2 = _interopRequireDefault(_PropTypes);
 
-var _includeDataProps = __webpack_require__(22);
+var _includeDataProps = __webpack_require__(23);
 
 var _includeDataProps2 = _interopRequireDefault(_includeDataProps);
 
@@ -16827,7 +16847,7 @@ if (process.env.NODE_ENV === 'production') {
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-var k=__webpack_require__(16),n=__webpack_require__(7),aa=__webpack_require__(10),t=__webpack_require__(21),ba=__webpack_require__(50),ca=__webpack_require__(51),da=__webpack_require__(0);
+var k=__webpack_require__(16),n=__webpack_require__(7),aa=__webpack_require__(10),t=__webpack_require__(22),ba=__webpack_require__(50),ca=__webpack_require__(51),da=__webpack_require__(0);
 function w(a){for(var b=arguments.length-1,g="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,c=0;c<b;c++)g+="\x26args[]\x3d"+encodeURIComponent(arguments[c+1]);b=Error(g+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}
 var x={children:!0,dangerouslySetInnerHTML:!0,defaultValue:!0,defaultChecked:!0,innerHTML:!0,suppressContentEditableWarning:!0,suppressHydrationWarning:!0,style:!0};function z(a,b){return(a&b)===b}
 var B={MUST_USE_PROPERTY:1,HAS_BOOLEAN_VALUE:4,HAS_NUMERIC_VALUE:8,HAS_POSITIVE_NUMERIC_VALUE:24,HAS_OVERLOADED_BOOLEAN_VALUE:32,HAS_STRING_BOOLEAN_VALUE:64,injectDOMPropertyConfig:function(a){var b=B,g=a.Properties||{},c=a.DOMAttributeNamespaces||{},h=a.DOMAttributeNames||{};a=a.DOMMutationMethods||{};for(var f in g){C.hasOwnProperty(f)?w("48",f):void 0;var e=f.toLowerCase(),d=g[f];e={attributeName:e,attributeNamespace:null,propertyName:f,mutationMethod:null,mustUseProperty:z(d,b.MUST_USE_PROPERTY),
@@ -16924,10 +16944,10 @@ var invariant = __webpack_require__(15);
 var _assign = __webpack_require__(16);
 var React = __webpack_require__(7);
 var emptyFunction = __webpack_require__(10);
-var emptyObject = __webpack_require__(21);
+var emptyObject = __webpack_require__(22);
 var hyphenateStyleName = __webpack_require__(50);
 var memoizeStringOnly = __webpack_require__(51);
-var warning = __webpack_require__(20);
+var warning = __webpack_require__(21);
 var checkPropTypes = __webpack_require__(31);
 var camelizeStyleName = __webpack_require__(111);
 var stream = __webpack_require__(0);
@@ -19580,7 +19600,7 @@ function peopleCount(count) {
 /***/ (function(module, exports, __webpack_require__) {
 
 /*global module*/
-var base64url = __webpack_require__(23);
+var base64url = __webpack_require__(24);
 var DataStream = __webpack_require__(54);
 var jwa = __webpack_require__(55);
 var Stream = __webpack_require__(0);
@@ -19728,8 +19748,8 @@ exports.default = padString;
 "use strict";
 /*jshint node:true */
 
-var Buffer = __webpack_require__(24).Buffer; // browserify
-var SlowBuffer = __webpack_require__(24).SlowBuffer;
+var Buffer = __webpack_require__(25).Buffer; // browserify
+var SlowBuffer = __webpack_require__(25).SlowBuffer;
 
 module.exports = bufferEq;
 
@@ -19776,7 +19796,7 @@ bufferEq.restore = function() {
 "use strict";
 
 
-var base64Url = __webpack_require__(23).fromBase64;
+var base64Url = __webpack_require__(24).fromBase64;
 var Buffer = __webpack_require__(33).Buffer;
 
 var getParamBytesForAlg = __webpack_require__(119);
@@ -19992,7 +20012,7 @@ module.exports = getParamBytesForAlg;
 /***/ (function(module, exports, __webpack_require__) {
 
 /*global module*/
-var base64url = __webpack_require__(23);
+var base64url = __webpack_require__(24);
 var DataStream = __webpack_require__(54);
 var jwa = __webpack_require__(55);
 var Stream = __webpack_require__(0);
@@ -20117,7 +20137,7 @@ module.exports = VerifyStream;
 /* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var JsonWebTokenError = __webpack_require__(25);
+var JsonWebTokenError = __webpack_require__(26);
 var NotBeforeError    = __webpack_require__(57);
 var TokenExpiredError = __webpack_require__(58);
 var decode            = __webpack_require__(53);
@@ -22764,15 +22784,18 @@ function Turnout(event, context) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util_response_lib__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_jsonwebtoken__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_jsonwebtoken___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_jsonwebtoken__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__util_env__ = __webpack_require__(18);
+
 
 
 
 
 function ResendEmail(event, context) {
     var data = JSON.parse(event.body);
+    var jwtSecret = __WEBPACK_IMPORTED_MODULE_4__util_env__["a" /* Environment */].jwtSecret;
     new Promise(function (resolve, reject) {
         try {
-            __WEBPACK_IMPORTED_MODULE_3_jsonwebtoken__["verify"](data.token, "oneflewoverthecuckoosnest");
+            __WEBPACK_IMPORTED_MODULE_3_jsonwebtoken__["verify"](data.token, jwtSecret);
             resolve();
         }
         catch (e) {

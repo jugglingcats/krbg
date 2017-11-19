@@ -7,6 +7,12 @@ Parameters:
   ProjectId:
     Type: String
     Description: AWS CodeStar projectID used to associate new resources to team members
+  JwtSecret:
+    Type: String
+    Description: JWT secret key
+  RecaptchaSecret:
+    Type: String
+    Description: Recaptcha secret key
 
 Resources:
   GetHome:
@@ -243,6 +249,8 @@ Resources:
       Environment:
         Variables:
           RECAPTCHA: "true"
+          JWT_SECRET: !Ref 'JwtSecret'
+          RECAPTCHA_SECRET: !Ref 'RecaptchaSecret'
           SKIP_PUT: "false"
           SITE_URL: https://krbg.uk
 
@@ -265,6 +273,7 @@ Resources:
       Environment:
         Variables:
           SITE_URL: https://krbg.uk
+          JWT_SECRET: !Ref 'JwtSecret'
 
   PostUnsubscribe:
     Type: AWS::Serverless::Function
