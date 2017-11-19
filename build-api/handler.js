@@ -4018,7 +4018,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__function_Turnout__ = __webpack_require__(139);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Turnout", function() { return __WEBPACK_IMPORTED_MODULE_10__function_Turnout__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__function_ResendEmail__ = __webpack_require__(140);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "ResendEmail", function() { return __WEBPACK_IMPORTED_MODULE_11__function_ResendEmail__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__function_ResendEmail___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__function_ResendEmail__);
+/* harmony reexport (binding) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_11__function_ResendEmail__, "ResendEmail")) __webpack_require__.d(__webpack_exports__, "ResendEmail", function() { return __WEBPACK_IMPORTED_MODULE_11__function_ResendEmail__["ResendEmail"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__function_Unsubscibe__ = __webpack_require__(141);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Unsubscribe", function() { return __WEBPACK_IMPORTED_MODULE_12__function_Unsubscibe__["a"]; });
 var fs = __webpack_require__(17);
@@ -22775,49 +22776,9 @@ function Turnout(event, context) {
 
 /***/ }),
 /* 140 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = ResendEmail;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_dynamodb_lib__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_EmailService__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util_response_lib__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_jsonwebtoken__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_jsonwebtoken___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_jsonwebtoken__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__util_env__ = __webpack_require__(18);
-
-
-
-
-
-function ResendEmail(event, context) {
-    var data = JSON.parse(event.body);
-    var jwtSecret = __WEBPACK_IMPORTED_MODULE_4__util_env__["a" /* Environment */].jwtSecret;
-    new Promise(function (resolve, reject) {
-        try {
-            __WEBPACK_IMPORTED_MODULE_3_jsonwebtoken__["verify"](data.token, jwtSecret);
-            resolve();
-        }
-        catch (e) {
-            reject({ message: "Key verification failed" });
-        }
-    }).then(function () {
-        var params = {
-            TableName: "ClubUsers",
-            Key: {
-                email: data.email
-            }
-        };
-        return Object(__WEBPACK_IMPORTED_MODULE_0__util_dynamodb_lib__["a" /* makeDynamoCall */])("get", params).then(function (result) {
-            return __WEBPACK_IMPORTED_MODULE_1__util_EmailService__["a" /* EmailService */].sendWelcomeEmail(result.Item);
-        });
-    }).then(function () {
-        context.succeed(Object(__WEBPACK_IMPORTED_MODULE_2__util_response_lib__["b" /* success */])());
-    }).catch(function (e) {
-        context.succeed(Object(__WEBPACK_IMPORTED_MODULE_2__util_response_lib__["a" /* failure */])({ message: e.message }));
-    });
-}
-
+throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'C:\\Users\\alfie\\personal\\krbg\\src\\lambda\\function\\ResendEmail.ts'");
 
 /***/ }),
 /* 141 */
