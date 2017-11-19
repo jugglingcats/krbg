@@ -8,10 +8,9 @@
     "react-scripts-ts": "2.7.0"
   },
   "scripts": {
-    "start": "react-scripts-ts start",
-    "start-api": "sam local start-api --host 0.0.0.0 --env-vars debug-vars.json --skip-pull-image --docker-volume-basedir /c/Users/alfie/personal/club2",
-    "command": "sam local invoke --skip-pull-image --env-vars debug-vars.json --docker-volume-basedir /c/Users/alfie/personal/club2",
-    "start-api-debug": "sam local start-api --env-vars debug-vars.json --host 0.0.0.0 --skip-pull-image --docker-volume-basedir /c/Users/alfie/personal/club2",
+    "start": "cross-env PORT=3001 react-scripts-ts start",
+    "start-api": "sam local start-api --host 0.0.0.0 --env-vars debug-vars.json --skip-pull-image --docker-volume-basedir /c/Users/alfie/personal/krbg",
+    "command": "sam local invoke --skip-pull-image --env-vars debug-vars.json --docker-volume-basedir /c/Users/alfie/personal/krbg",
     "watch-api": "webpack --watch",
     "build": "rimraf ./build && cross-env GENERATE_SOURCEMAP=false react-scripts-ts build && webpack",
     "test": "react-scripts-ts test --env=jsdom",
