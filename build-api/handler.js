@@ -19599,6 +19599,7 @@ var TimeOption;
     TimeOption["t2130"] = "9.30pm";
 })(TimeOption = TimeOption || (TimeOption = {}));
 function userFriendlyName(profile) {
+    console.log("Build user name for ", profile.username, "+[", profile.surname + "]");
     if (profile.surname && profile.surname.length) {
         return profile.username + " " + profile.surname.charAt(0);
     }
@@ -22851,6 +22852,7 @@ function Turnout(event, context) {
         return f.Items.map(function (profile) {
             return {
                 username: profile.username,
+                surname: profile.surname,
                 option: profile.option,
                 time: profile.time
             };

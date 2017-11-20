@@ -16,6 +16,7 @@ export function Turnout(event: any, context: any) {
         return f.Items.map((profile: any) => {
             return {
                 username: profile.username,
+                surname: profile.surname,
                 option: profile.option,
                 time: profile.time
             }

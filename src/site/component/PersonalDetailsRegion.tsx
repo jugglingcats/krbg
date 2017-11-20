@@ -11,8 +11,16 @@ type PersonalDetailsRegionState = {
 
 export class PersonalDetailsRegion extends React.Component<ControllerProps, PersonalDetailsRegionState> {
     state: PersonalDetailsRegionState = {
-        busy: false
+        busy: false,
+        username: "",
+        surname: "",
+        saved: false
     };
+
+    constructor(props: ControllerProps) {
+        super(props);
+        this.updateInput = this.updateInput.bind(this);
+    }
 
     componentDidMount() {
         this.updateStateFromController();
@@ -26,17 +34,10 @@ export class PersonalDetailsRegion extends React.Component<ControllerProps, Pers
         })
     }
 
-    updateUsername(e: any) {
+    updateInput(e: any) {
         this.setState({
             saved: false,
-            username: e.target.value as string
-        });
-    }
-
-    updateSurname(e: any) {
-        this.setState({
-            saved: false,
-            surname: e.target.value as string
+            [e.target.name]: e.target.value as string
         });
     }
 
@@ -76,7 +77,7 @@ export class PersonalDetailsRegion extends React.Component<ControllerProps, Pers
     }
 
     render() {
-        return (<form className="pure-form">
+        return (<form className="pure-form pure-form-stacked">
             <fieldset>
                 <legend>Change your details</legend>
                 {
@@ -87,13 +88,18 @@ export class PersonalDetailsRegion extends React.Component<ControllerProps, Pers
                     <div className="App-standoff"><ScaleLoader color={"blue"} height={12} loading={true}/></div>
                     ||
                     <div>
-                        <label htmlFor="username">First Name</label>
-                        <input id="username" type="text" placeholder="Enter your name" required
-                               onChange={(e) => this.updateUsername(e)} value={this.state.username}/>
-
-                        <label htmlFor="surname">Surname (optional)</label>
-                        <input id="surname" type="text" placeholder="Surname or initial" required
-                               onChange={(e) => this.updateSurname(e)} value={this.state.surname}/>
+                        <div className="pure-g">
+                            <div className="pure-u-1 pure-u-sm-1-2">
+                                <label htmlFor="username">First Name</label>
+                                <input name="username" id="username" type="text" placeholder="Enter your name" required
+                                       onChange={this.updateInput} value={this.state.username}/>
+                            </div>
+                            <div className="pure-u-1 pure-u-sm-1-2">
+                                <label htmlFor="surname">Surname (optional)</label>
+                                <input name="surname" id="surname" type="text" placeholder="Surname or initial"
+                                       onChange={this.updateInput} value={this.state.surname || ""}/>
+                            </div>
+                        </div>
 
                         <button type="button" onClick={e => this.storeDetails()}
                                 hidden={this.pristine}

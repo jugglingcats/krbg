@@ -23,6 +23,7 @@ export class SignUp extends React.Component<ControllerProps & RouteComponentProp
     state: AppState = {
         username: "",
         email: "",
+        surname: "",
         emailExists: false
     };
 
@@ -108,7 +109,7 @@ export class SignUp extends React.Component<ControllerProps & RouteComponentProp
                                onChange={updateUsername} value={this.state.username}/>
 
                         <label htmlFor="surname">Surname (optional)</label>
-                        <input id="surname" type="text" placeholder="Surname or initial" required
+                        <input id="surname" type="text" placeholder="Surname or first initial"
                                onChange={(e) => this.updateSurname(e)} value={this.state.surname}/>
 
                         <label htmlFor="email">Email</label>
