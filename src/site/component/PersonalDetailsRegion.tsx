@@ -2,14 +2,18 @@ import * as React from "react";
 import {ControllerProps} from "../AppController";
 import {ScaleLoader} from "react-spinners";
 
-type HolidayTimeRegionState = {
+type PersonalDetailsRegionState = {
     busy: boolean,
     username?: string,
     surname?: string,
     saved?: boolean
 }
 
-export class PersonalDetailsRegion extends React.Component<ControllerProps, HolidayTimeRegionState> {
+export class PersonalDetailsRegion extends React.Component<ControllerProps, PersonalDetailsRegionState> {
+    state: PersonalDetailsRegionState = {
+        busy: false
+    };
+
     componentDidMount() {
         this.updateStateFromController();
     }
@@ -24,19 +28,34 @@ export class PersonalDetailsRegion extends React.Component<ControllerProps, Holi
 
     updateUsername(e: any) {
         this.setState({
+            saved: false,
             username: e.target.value as string
         });
     }
 
     updateSurname(e: any) {
         this.setState({
+            saved: false,
             surname: e.target.value as string
         });
     }
 
     storeDetails() {
+        this.setState({
+            saved: false,
+            busy: true
+        });
         this.props.controller.storeUserDetails(this.state.username!, this.state.surname)
-            .then(this.updateStateFromController);
+            .then(() => {
+                this.setState({
+                    saved: true,
+                    busy: false
+                });
+                this.updateStateFromController();
+            }).catch(() => {
+                // we're going to error page!
+            }
+        );
     }
 
 
