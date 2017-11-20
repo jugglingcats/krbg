@@ -1,6 +1,6 @@
 import {action, observable} from "mobx";
 import {AttendanceOption} from "../common/AttendanceOption";
-import {TimeOption, UserProfile} from "../common/UserProfile";
+import {TimeOption, UserProfile, UserProfileRegistration} from "../common/UserProfile";
 
 export type ControllerProps = {
     controller: AppController;
@@ -120,7 +120,18 @@ export class AppController {
     }
 
     @action
-    public signup(info: any): Promise<{ exists: boolean, token?: string, profile?: UserProfile }> {
+    public storeUserDetails(username: string, surname?: string): Promise<void> {
+        return this.post("storeUserDetails", {
+            key: this.verified.profile!.verificationKey,
+            username: username,
+            surname: surname
+        }).then((profile: UserProfile) => {
+            this.verified.profile = profile;
+        });
+    }
+
+    @action
+    public signup(info: UserProfileRegistration & { recaptcha: string }): Promise<{ exists: boolean, token?: string, profile?: UserProfile }> {
         const handler = {
             409: (r: Response) => {
                 return r.json().then((obj: any) => {

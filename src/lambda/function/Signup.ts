@@ -23,6 +23,7 @@ export function Signup(event: any, context: any) {
 
     const profile: UserProfile = {
         username: data.username,
+        surname: data.surname,
         email: data.email,
         verificationKey: verificationKey,
         roles: [],

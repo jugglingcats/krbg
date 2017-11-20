@@ -345,3 +345,20 @@ Resources:
           Properties:
             Path: /api/storeHoliday
             Method: post
+
+  PostStoreUserDetails:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build-api/handler.StoreUserDetails
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: nodejs6.10
+      Timeout: 10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /api/storeUserDetails
+            Method: post

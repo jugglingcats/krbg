@@ -9,6 +9,7 @@ const Recaptcha = require("react-recaptcha");
 
 export type AppState = {
     username?: string,
+    surname?: string,
     email?: string,
     recaptcha?: string,
     requestEmail?: boolean;
@@ -30,9 +31,10 @@ export class SignUp extends React.Component<ControllerProps & RouteComponentProp
             emailExists: false
         });
         this.props.controller.signup({
-            username: this.state.username,
-            email: this.state.email,
-            recaptcha: this.state.recaptcha
+            username: this.state.username!,
+            surname: this.state.surname,
+            email: this.state.email!,
+            recaptcha: this.state.recaptcha!
         }).then(r => {
             if (r.exists) {
                 this.setState({
@@ -57,16 +59,22 @@ export class SignUp extends React.Component<ControllerProps & RouteComponentProp
         })
     }
 
+    updateUsername(e: any) {
+        this.setState({
+            username: e.target.value as string
+        });
+    }
+
+    updateSurname(e: any) {
+        this.setState({
+            surname: e.target.value as string
+        });
+    }
+
     updateEmail(e: any) {
         this.setState({
             emailExists: false,
             email: e.target.value as string,
-        });
-    }
-
-    updateUsername(e: any) {
-        this.setState({
-            username: e.target.value as string
         });
     }
 
@@ -95,9 +103,13 @@ export class SignUp extends React.Component<ControllerProps & RouteComponentProp
                     <fieldset>
                         <legend>Sign up to Kensal Rise Backgammon</legend>
 
-                        <label htmlFor="username">Name</label>
+                        <label htmlFor="username">First Name</label>
                         <input id="username" type="text" placeholder="Enter your name" required
                                onChange={updateUsername} value={this.state.username}/>
+
+                        <label htmlFor="surname">Surname (optional)</label>
+                        <input id="surname" type="text" placeholder="Surname or initial" required
+                               onChange={(e) => this.updateSurname(e)} value={this.state.surname}/>
 
                         <label htmlFor="email">Email</label>
                         <input id="email" type="email" placeholder="Enter your email"

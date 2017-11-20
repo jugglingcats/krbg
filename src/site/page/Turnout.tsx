@@ -3,7 +3,7 @@ import {VerifiedComponentProps} from "../component/KeyVerification";
 import {ScaleLoader} from "react-spinners";
 import {peopleCount} from "../../common/utils";
 import {ProfileLink} from "../App";
-import {TimeOption, UserProfile} from "../../common/UserProfile";
+import {TimeOption, userFriendlyName, UserProfile} from "../../common/UserProfile";
 
 class Count extends React.Component<{ items: Array<any>, option: string }, any> {
     render() {
@@ -25,7 +25,7 @@ export class Turnout extends React.Component<VerifiedComponentProps, any> {
     renderGroup(filter: string | undefined) {
         return this.state.turnout.filter((t: UserProfile) => t.option === filter).map((t: UserProfile, index: number) => (
             <div className="App-userbadge" key={filter + '-' + index}>
-                {t.username}
+                {userFriendlyName(t)}
             </div>
         ))
     }
@@ -38,8 +38,6 @@ export class Turnout extends React.Component<VerifiedComponentProps, any> {
         const groupedProfiles = this.state.turnout
             .filter((t: any) => t.option === "yes")
             .reduce((grouped: GroupedProfiles, profile: UserProfile) => {
-                console.log("Group user", profile.username, profile.time);
-
                 const key = profile.time || "not specified";
                 if (!grouped[key]) {
                     grouped[key] = [];
@@ -58,7 +56,7 @@ export class Turnout extends React.Component<VerifiedComponentProps, any> {
                     <div className="pure-u-3-5 pure-u-sm-4-5">
                         {
                             groupedProfiles[group].map((profile: UserProfile, index: number) => (
-                                <div className="App-userbadge" key={"profile" + index}>{profile.username}</div>
+                                <div className="App-userbadge" key={"profile" + index}>{userFriendlyName(profile)}</div>
                             ))
                         }
                     </div>

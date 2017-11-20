@@ -7,9 +7,20 @@ export enum TimeOption {
     t2130 = "9.30pm"
 }
 
-export type UserProfile = {
+export function userFriendlyName(profile: UserProfile) {
+    if (profile.surname && profile.surname.length) {
+        return profile.username + " " + profile.surname.charAt(0);
+    }
+    return profile.username;
+}
+
+export type UserProfileRegistration = {
     username: string,
+    surname?: string,
     email: string,
+}
+
+export type UserProfile = UserProfileRegistration & {
     option?: AttendanceOption,
     verificationKey: string,
     roles: string[]

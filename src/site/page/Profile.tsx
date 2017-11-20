@@ -6,6 +6,7 @@ import {TimeOptionSelection} from "../component/TimeOptionSelection";
 import {UnsubscribeRegion} from "../component/UnsubscribeRegion";
 import {StatusSelectionRegion} from "../component/StatusSelectionRegion";
 import {HolidayTimeRegion} from "../component/HolidayTimeRegion";
+import {PersonalDetailsRegion} from "../component/PersonalDetailsRegion";
 
 @observer
 export class ProfilePage extends React.Component<VerifiedComponentProps> {
@@ -42,6 +43,8 @@ export class ProfilePage extends React.Component<VerifiedComponentProps> {
                     </form>
 
                     <HolidayTimeRegion controller={controller}/>
+
+                    <PersonalDetailsRegion controller={controller}/>
 
                     {
                         controller.verified.profile!.roles.some(r => r === "admin") && <div>

@@ -2,7 +2,7 @@ import * as mailer from "nodemailer";
 import {default as rhm, Email, Box, Item, Span, A} from "react-html-email";
 import * as React from "react";
 import {Environment} from "./env";
-import {UserProfile} from "../../common/UserProfile";
+import {userFriendlyName, UserProfile} from "../../common/UserProfile";
 import {peopleCount} from "../../common/utils";
 import {AttendanceOption} from "../../common/AttendanceOption";
 
@@ -37,7 +37,7 @@ const userBadge = {
 };
 
 function userbadge(p: UserProfile) {
-    return <Span style={userBadge} key={p.username}>{p.username}</Span>
+    return <Span style={userBadge} key={p.username}>{userFriendlyName(p)}</Span>
 }
 
 class Para extends React.Component<any, any> {
