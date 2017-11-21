@@ -103,7 +103,7 @@ function sendEmail(subject: string, profile: UserProfile, body: any) {
 
                     <Para>
                         You can manage your settings or unsubscribe at any time by viewing your&nbsp;
-                        <ProfileLink profile={profile}>Profile</ProfileLink>
+                        <ProfileLink profile={profile}>Profile</ProfileLink>. Please don't reply to this email unless there's an issue.
                     </Para>
                 </Email>
             )

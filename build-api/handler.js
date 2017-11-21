@@ -842,7 +842,8 @@ function sendEmail(subject, profile, body) {
                 body,
                 __WEBPACK_IMPORTED_MODULE_2_react__["createElement"](Para, null,
                     "You can manage your settings or unsubscribe at any time by viewing your\u00A0",
-                    __WEBPACK_IMPORTED_MODULE_2_react__["createElement"](ProfileLink, { profile: profile }, "Profile"))))
+                    __WEBPACK_IMPORTED_MODULE_2_react__["createElement"](ProfileLink, { profile: profile }, "Profile"),
+                    ". Please don't reply to this email unless there's an issue.")))
         }, function (err, data) {
             if (err) {
                 console.log("Error sending email: ", err);
