@@ -811,7 +811,7 @@ var TurnoutLink = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     TurnoutLink.prototype.render = function () {
-        var href = __WEBPACK_IMPORTED_MODULE_3__env__["a" /* Environment */].siteLink("turnout/" + this.props.profile.verificationKey);
+        var href = __WEBPACK_IMPORTED_MODULE_3__env__["a" /* Environment */].siteLink("confirmed/" + this.props.profile.verificationKey);
         return __WEBPACK_IMPORTED_MODULE_2_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_html_email__["A"], { title: "Link", href: href }, this.props.children);
     };
     return TurnoutLink;
@@ -885,8 +885,9 @@ var EmailService = (function () {
     EmailService.sendFinalEmail = function (profile, users) {
         var confirmed = users.filter(function (p) { return p.option === "yes"; });
         var denied = users.filter(function (p) { return p.option === "no"; });
-        var title = confirmed.length > 3 ? "Backgammon this week... (final numbers)" :
-            "Backgammon this week... only " + confirmed.length + " confirmed!";
+        var title = "Backgammon this week... (final numbers)";
+        // const title = confirmed.length > 3 ? "Backgammon this week... (final numbers)" :
+        //     "Backgammon this week... only " + confirmed.length + " confirmed!";
         return sendEmail(title, profile, (__WEBPACK_IMPORTED_MODULE_2_react__["createElement"]("div", null,
             __WEBPACK_IMPORTED_MODULE_2_react__["createElement"](Para, null,
                 "There are ",

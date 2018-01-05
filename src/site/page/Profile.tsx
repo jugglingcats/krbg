@@ -21,17 +21,17 @@ export class ProfilePage extends React.Component<VerifiedComponentProps> {
                 </p>
 
                 <p>
-                    The club meets Thursdays at The Island pub in Kensal Rise. Most people
-                    arrive at 8.30pm but early birds arrive at 8pm.
+                    The club meets Thursdays at The Island pub in Kensal Rise. Regular start time is 8.30pm.
                 </p>
 
                 <div>
                     <StatusSelectionRegion controller={controller}/>
 
+{/*
                     {
-                        option === "yes" &&
-                        <TimeOptionSelection controller={controller}/>
+                        option === "yes" && <TimeOptionSelection controller={controller}/>
                     }
+*/}
 
                     <form className="pure-form App-standoff">
                         <fieldset>

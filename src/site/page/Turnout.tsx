@@ -30,6 +30,7 @@ export class Turnout extends React.Component<VerifiedComponentProps, any> {
         ))
     }
 
+    // not used
     renderComingGroup() {
         type GroupedProfiles = {
             [index: string]: UserProfile[]
@@ -38,7 +39,7 @@ export class Turnout extends React.Component<VerifiedComponentProps, any> {
         const groupedProfiles = this.state.turnout
             .filter((t: any) => t.option === "yes")
             .reduce((grouped: GroupedProfiles, profile: UserProfile) => {
-                const key = profile.time || "not specified";
+                const key = profile.time || "default";
                 if (!grouped[key]) {
                     grouped[key] = [];
                 }
@@ -68,11 +69,12 @@ export class Turnout extends React.Component<VerifiedComponentProps, any> {
         return this.state.ready && (
             <div>
                 <p className="App-intro">Current responses for this week</p>
+                <p>Regular start time is 8.30pm</p>
 
                 <form className="pure-form pure-form-stacked">
                     <fieldset>
                         <legend>There <Count items={this.state.turnout} option="yes"/> confirmed</legend>
-                        {this.renderComingGroup()}
+                        {this.renderGroup("yes")}
                     </fieldset>
 
                     <fieldset>

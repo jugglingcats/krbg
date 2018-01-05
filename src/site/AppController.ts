@@ -31,6 +31,9 @@ export class AppController {
     verified: VerifiedPageState;
 
     private static doFetch(method: string, path: string, args: any): Promise<any> {
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json");
+
         switch (method) {
             case "GET":
                 return fetch(API + path, {
@@ -40,9 +43,7 @@ export class AppController {
                 return fetch(API + path, {
                     method: "POST",
                     body: JSON.stringify(args),
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
+                    headers: headers
                 });
             default:
                 throw "Unknown method: " + method;

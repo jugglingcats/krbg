@@ -74,7 +74,7 @@ class ProfileLink extends React.Component<{ profile: UserProfile }, any> {
 
 class TurnoutLink extends React.Component<{ profile: UserProfile }, any> {
     render() {
-        let href = Environment.siteLink("turnout/" + this.props.profile.verificationKey);
+        let href = Environment.siteLink("confirmed/" + this.props.profile.verificationKey);
         return <A title="Link" href={href}>{this.props.children}</A>
     }
 }
@@ -174,8 +174,9 @@ export class EmailService {
     static sendFinalEmail(profile: UserProfile, users: Array<UserProfile>) {
         const confirmed = users.filter(p => p.option === "yes");
         const denied = users.filter(p => p.option === "no");
-        const title = confirmed.length > 3 ? "Backgammon this week... (final numbers)" :
-            "Backgammon this week... only " + confirmed.length + " confirmed!";
+        const title = "Backgammon this week... (final numbers)";
+        // const title = confirmed.length > 3 ? "Backgammon this week... (final numbers)" :
+        //     "Backgammon this week... only " + confirmed.length + " confirmed!";
 
         return sendEmail(title, profile,
             (<div>
