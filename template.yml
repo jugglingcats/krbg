@@ -30,11 +30,11 @@ Resources:
           Properties:
             Path: /
             Method: get
-#        ProxyApiGreedy:
-#          Type: Api
-#          Properties:
-#            Path: /{proxy+}
-#            Method: GET
+        ProxyApiGreedy:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: GET
 
   GetManifest:
     Type: AWS::Serverless::Function
