@@ -18,6 +18,7 @@ export function Turnout(event: any, context: any) {
                 username: profile.username,
                 surname: profile.surname,
                 option: profile.option,
+                friends: profile.friends,
                 time: profile.time
             }
         });

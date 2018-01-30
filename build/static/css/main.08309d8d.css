@@ -1,4 +1,4 @@
-.custom-radios div{display:inline-block;zoom:70%}.custom-radios input[type=radio]{display:none}.custom-radios input[type=radio]+label{color:#333;font-family:Arial,sans-serif;font-size:14px}.custom-radios input[type=radio]+label span{display:inline-block;width:40px;height:40px;margin:-1px 4px 0 0;vertical-align:middle;cursor:pointer;border-radius:50%;border:2px solid #fff;-webkit-box-shadow:0 1px 3px 0 rgba(0,0,0,.33);box-shadow:0 1px 3px 0 rgba(0,0,0,.33);background-repeat:no-repeat;background-position:50%;text-align:center;line-height:44px}.custom-radios input[type=radio]+label span svg{opacity:0;-webkit-transition:all .3s ease;-o-transition:all .3s ease;transition:all .3s ease}.custom-radios input[type=radio]#t2000+label span,.custom-radios input[type=radio]#t2030+label span{background-color:rgba(0,172,52,.18)}.custom-radios input[type=radio]#t2100+label span,.custom-radios input[type=radio]#t2130+label span{background-color:rgba(255,60,60,.28)}.custom-radios input[type=radio]:checked+label span svg{opacity:1}/*!
+/*!
 Pure v1.0.0
 Copyright 2013 Yahoo!
 Licensed under the BSD License.

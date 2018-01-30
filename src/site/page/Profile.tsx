@@ -7,6 +7,7 @@ import {UnsubscribeRegion} from "../component/UnsubscribeRegion";
 import {StatusSelectionRegion} from "../component/StatusSelectionRegion";
 import {HolidayTimeRegion} from "../component/HolidayTimeRegion";
 import {PersonalDetailsRegion} from "../component/PersonalDetailsRegion";
+import {BringFriendRegion} from "../component/BringFriendRegion";
 
 @observer
 export class ProfilePage extends React.Component<VerifiedComponentProps> {
@@ -32,6 +33,9 @@ export class ProfilePage extends React.Component<VerifiedComponentProps> {
                         option === "yes" && <TimeOptionSelection controller={controller}/>
                     }
 */}
+                    {
+                        option == "yes" && <BringFriendRegion controller={controller}/>
+                    }
 
                     <form className="pure-form App-standoff">
                         <fieldset>

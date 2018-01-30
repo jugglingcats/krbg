@@ -42,6 +42,7 @@ export {SendCustomEmail} from "./function/SendCustomEmail";
 export {StoreOption} from "./function/StoreOption";
 export {StoreTimeOption} from "./function/StoreTimeOption";
 export {StoreHoliday} from "./function/StoreHoliday";
+export {StoreFriends} from "./function/StoreFriends";
 export {StoreUserDetails} from "./function/StoreUserDetails";
 
 export {Turnout} from "./function/Turnout";

@@ -121,6 +121,16 @@ export class AppController {
     }
 
     @action
+    public storeFriends(friends?: number): Promise<void> {
+        return this.post("storeFriends", {
+            key: this.verified.profile!.verificationKey,
+            friends: friends
+        }).then((profile: UserProfile) => {
+            this.verified.profile = profile;
+        });
+    }
+
+    @action
     public storeUserDetails(username: string, surname?: string): Promise<void> {
         return this.post("storeUserDetails", {
             key: this.verified.profile!.verificationKey,

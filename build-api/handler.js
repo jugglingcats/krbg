@@ -130,6 +130,48 @@ function buildResponse(statusCode, info) {
 
 /***/ }),
 /* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return standardProjection; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return expressionAttributeNames; });
+/* harmony export (immutable) */ __webpack_exports__["b"] = loadProfile;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dynamodb_lib__ = __webpack_require__(1);
+
+var standardProjection = "username, surname, email, #option, verificationKey, #roles, #time, holiday, friends";
+var expressionAttributeNames = {
+    '#option': 'option',
+    '#roles': 'roles',
+    '#time': 'time'
+};
+function loadProfile(key, requiredRole) {
+    var params = {
+        TableName: "ClubUsers",
+        FilterExpression: "verificationKey = :val",
+        ExpressionAttributeValues: {
+            ":val": key
+        },
+        ProjectionExpression: standardProjection,
+        ExpressionAttributeNames: expressionAttributeNames
+    };
+    return Object(__WEBPACK_IMPORTED_MODULE_0__dynamodb_lib__["a" /* makeDynamoCall */])("scan", params).then(function (r) {
+        if (r.Count == 0) {
+            console.error("Key verification failed: ", key);
+            return Promise.reject({ message: "Key verification failed. Perhaps account was deleted?" });
+        }
+        var item = r.Items[0];
+        if (requiredRole && !item.roles.some(function (r) { return r === requiredRole; })) {
+            console.error("User does not have required role: ", key);
+            return Promise.reject({ message: "You do not have the required role to perform this operation" });
+        }
+        console.log("Resolved key: ", item);
+        return item;
+    });
+}
+
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -523,48 +565,6 @@ function createDefaultLogger(levels) {
 
 
 /***/ }),
-/* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return standardProjection; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return expressionAttributeNames; });
-/* harmony export (immutable) */ __webpack_exports__["b"] = loadProfile;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dynamodb_lib__ = __webpack_require__(1);
-
-var standardProjection = "username, surname, email, #option, verificationKey, #roles, #time, holiday";
-var expressionAttributeNames = {
-    '#option': 'option',
-    '#roles': 'roles',
-    '#time': 'time'
-};
-function loadProfile(key, requiredRole) {
-    var params = {
-        TableName: "ClubUsers",
-        FilterExpression: "verificationKey = :val",
-        ExpressionAttributeValues: {
-            ":val": key
-        },
-        ProjectionExpression: standardProjection,
-        ExpressionAttributeNames: expressionAttributeNames
-    };
-    return Object(__WEBPACK_IMPORTED_MODULE_0__dynamodb_lib__["a" /* makeDynamoCall */])("scan", params).then(function (r) {
-        if (r.Count == 0) {
-            console.error("Key verification failed: ", key);
-            return Promise.reject({ message: "Key verification failed. Perhaps account was deleted?" });
-        }
-        var item = r.Items[0];
-        if (requiredRole && !item.roles.some(function (r) { return r === requiredRole; })) {
-            console.error("User does not have required role: ", key);
-            return Promise.reject({ message: "You do not have the required role to perform this operation" });
-        }
-        console.log("Resolved key: ", item);
-        return item;
-    });
-}
-
-
-/***/ }),
 /* 5 */
 /***/ (function(module, exports) {
 
@@ -766,7 +766,13 @@ var userBadge = {
     borderRadius: "5px"
 };
 function userbadge(p) {
-    return __WEBPACK_IMPORTED_MODULE_2_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_html_email__["Span"], { style: userBadge, key: p.username }, Object(__WEBPACK_IMPORTED_MODULE_4__common_UserProfile__["a" /* userFriendlyName */])(p));
+    return __WEBPACK_IMPORTED_MODULE_2_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_html_email__["Span"], null,
+        __WEBPACK_IMPORTED_MODULE_2_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_html_email__["Span"], { style: userBadge, key: p.username },
+            Object(__WEBPACK_IMPORTED_MODULE_4__common_UserProfile__["a" /* userFriendlyName */])(p),
+            p.friends && p.option === "yes" && __WEBPACK_IMPORTED_MODULE_2_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1_react_html_email__["Span"], null,
+                " + ",
+                p.friends)),
+        "\u00A0");
 }
 var Para = (function (_super) {
     __extends(Para, _super);
@@ -884,6 +890,10 @@ var EmailService = (function () {
     };
     EmailService.sendFinalEmail = function (profile, users) {
         var confirmed = users.filter(function (p) { return p.option === "yes"; });
+        var confirmedCount = confirmed.reduce(function (total, current) {
+            var friends = current.friends || 0;
+            return Number(total + 1) + Number(friends);
+        }, 0);
         var denied = users.filter(function (p) { return p.option === "no"; });
         var title = "Backgammon this week... (final numbers)";
         // const title = confirmed.length > 3 ? "Backgammon this week... (final numbers)" :
@@ -891,7 +901,7 @@ var EmailService = (function () {
         return sendEmail(title, profile, (__WEBPACK_IMPORTED_MODULE_2_react__["createElement"]("div", null,
             __WEBPACK_IMPORTED_MODULE_2_react__["createElement"](Para, null,
                 "There are ",
-                Object(__WEBPACK_IMPORTED_MODULE_5__common_utils__["a" /* peopleCount */])(confirmed.length),
+                Object(__WEBPACK_IMPORTED_MODULE_5__common_utils__["a" /* peopleCount */])(confirmedCount),
                 " confirmed this week."),
             confirmed.length > 0 && __WEBPACK_IMPORTED_MODULE_2_react__["createElement"](Para, null, confirmed.map(function (p) { return userbadge(p); })),
             denied.length > 0 && (__WEBPACK_IMPORTED_MODULE_2_react__["createElement"]("div", null,
@@ -2222,7 +2232,7 @@ const os = __webpack_require__(40);
 const crypto = __webpack_require__(6);
 const DataStream = __webpack_require__(86);
 const PassThrough = __webpack_require__(0).PassThrough;
-const shared = __webpack_require__(3);
+const shared = __webpack_require__(4);
 
 // default timeout values in ms
 const CONNECTION_TIMEOUT = 2 * 60 * 1000; // how much to wait for the connection to be established
@@ -4019,14 +4029,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "StoreTimeOption", function() { return __WEBPACK_IMPORTED_MODULE_8__function_StoreTimeOption__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__function_StoreHoliday__ = __webpack_require__(139);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "StoreHoliday", function() { return __WEBPACK_IMPORTED_MODULE_9__function_StoreHoliday__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__function_StoreUserDetails__ = __webpack_require__(140);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "StoreUserDetails", function() { return __WEBPACK_IMPORTED_MODULE_10__function_StoreUserDetails__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__function_Turnout__ = __webpack_require__(142);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Turnout", function() { return __WEBPACK_IMPORTED_MODULE_11__function_Turnout__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__function_ResendEmail__ = __webpack_require__(143);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "ResendEmail", function() { return __WEBPACK_IMPORTED_MODULE_12__function_ResendEmail__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__function_Unsubscibe__ = __webpack_require__(144);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Unsubscribe", function() { return __WEBPACK_IMPORTED_MODULE_13__function_Unsubscibe__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__function_StoreFriends__ = __webpack_require__(140);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "StoreFriends", function() { return __WEBPACK_IMPORTED_MODULE_10__function_StoreFriends__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__function_StoreUserDetails__ = __webpack_require__(141);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "StoreUserDetails", function() { return __WEBPACK_IMPORTED_MODULE_11__function_StoreUserDetails__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__function_Turnout__ = __webpack_require__(143);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Turnout", function() { return __WEBPACK_IMPORTED_MODULE_12__function_Turnout__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__function_ResendEmail__ = __webpack_require__(144);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "ResendEmail", function() { return __WEBPACK_IMPORTED_MODULE_13__function_ResendEmail__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__function_Unsubscibe__ = __webpack_require__(145);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Unsubscribe", function() { return __WEBPACK_IMPORTED_MODULE_14__function_Unsubscibe__["a"]; });
 var fs = __webpack_require__(17);
 var aws_region = "eu-west-1";
 // return the app html
@@ -4047,6 +4059,7 @@ function manifest(event, context) {
         headers: { 'Content-Type': 'application/json' }
     });
 }
+
 
 
 
@@ -7830,7 +7843,7 @@ module.exports = require("tls");
 const Stream = __webpack_require__(0).Stream;
 const fetch = __webpack_require__(19);
 const crypto = __webpack_require__(6);
-const shared = __webpack_require__(3);
+const shared = __webpack_require__(4);
 
 /**
  * XOAUTH2 access_token generator for Gmail.
@@ -8851,7 +8864,7 @@ module.exports = bytesToUuid;
 /* harmony export (immutable) */ __webpack_exports__["a"] = CronRollUsers;
 /* harmony export (immutable) */ __webpack_exports__["b"] = RollUsers;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_dynamodb_lib__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_keyVerification__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_keyVerification__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util_response_lib__ = __webpack_require__(2);
 
 
@@ -8873,6 +8886,7 @@ function CronRollUsers() {
                 AttributeUpdates: {
                     option: { Action: "DELETE" },
                     time: { Action: "DELETE" },
+                    friends: { Action: "DELETE" },
                     holiday: r.holiday ? {
                         Action: "PUT",
                         Value: r.holiday
@@ -8916,7 +8930,7 @@ function RollUsers(event, context) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_response_lib__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_dynamodb_lib__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util_EmailService__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util_keyVerification__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util_keyVerification__ = __webpack_require__(3);
 
 
 
@@ -8953,7 +8967,7 @@ function BeginWeek(event, context) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_response_lib__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_dynamodb_lib__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util_EmailService__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util_keyVerification__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util_keyVerification__ = __webpack_require__(3);
 
 
 
@@ -8961,7 +8975,12 @@ function BeginWeek(event, context) {
 function CronSendReminder() {
     return Object(__WEBPACK_IMPORTED_MODULE_1__util_dynamodb_lib__["a" /* makeDynamoCall */])("scan", __WEBPACK_IMPORTED_MODULE_2__util_EmailService__["b" /* standardEmailScan */]).then(function (f) {
         var unconfirmed = f.Items.filter(function (profile) { return profile.option === undefined; });
-        var confirmedCount = f.Items.filter(function (profile) { return profile.option === "yes"; });
+        var confirmedCount = f.Items
+            .filter(function (p) { return p.option === "yes"; })
+            .reduce(function (total, current) {
+            var friends = current.friends || 0;
+            return Number(total + 1) + Number(friends);
+        }, 0);
         return Promise.all(unconfirmed.map(function (profile) {
             return __WEBPACK_IMPORTED_MODULE_2__util_EmailService__["a" /* EmailService */].sendReminderEmail(profile, confirmedCount);
         }));
@@ -8990,7 +9009,7 @@ function SendReminder(event, context) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_response_lib__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_dynamodb_lib__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util_EmailService__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util_keyVerification__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util_keyVerification__ = __webpack_require__(3);
 
 
 
@@ -9186,7 +9205,7 @@ function validateRecaptcha(code) {
 
 
 const Mailer = __webpack_require__(70);
-const shared = __webpack_require__(3);
+const shared = __webpack_require__(4);
 const SMTPPool = __webpack_require__(84);
 const SMTPTransport = __webpack_require__(88);
 const SendmailTransport = __webpack_require__(89);
@@ -9334,7 +9353,7 @@ module.exports.getTestMessageUrl = function(info) {
 
 
 const EventEmitter = __webpack_require__(12);
-const shared = __webpack_require__(3);
+const shared = __webpack_require__(4);
 const mimeTypes = __webpack_require__(37);
 const MailComposer = __webpack_require__(74);
 const DKIM = __webpack_require__(77);
@@ -11777,7 +11796,7 @@ module.exports = httpProxyClient;
 "use strict";
 
 
-const shared = __webpack_require__(3);
+const shared = __webpack_require__(4);
 const MimeNode = __webpack_require__(39);
 const mimeFuncs = __webpack_require__(20);
 
@@ -12089,7 +12108,7 @@ const EventEmitter = __webpack_require__(12);
 const PoolResource = __webpack_require__(85);
 const SMTPConnection = __webpack_require__(28);
 const wellKnown = __webpack_require__(46);
-const shared = __webpack_require__(3);
+const shared = __webpack_require__(4);
 const packageData = __webpack_require__(5);
 
 /**
@@ -12693,7 +12712,7 @@ module.exports = SMTPPool;
 
 
 const SMTPConnection = __webpack_require__(28);
-const assign = __webpack_require__(3).assign;
+const assign = __webpack_require__(4).assign;
 const XOAuth2 = __webpack_require__(45);
 const EventEmitter = __webpack_require__(12);
 
@@ -13075,7 +13094,7 @@ module.exports = {"126":{"host":"smtp.126.com","port":465,"secure":true},"163":{
 const EventEmitter = __webpack_require__(12);
 const SMTPConnection = __webpack_require__(28);
 const wellKnown = __webpack_require__(46);
-const shared = __webpack_require__(3);
+const shared = __webpack_require__(4);
 const XOAuth2 = __webpack_require__(45);
 const packageData = __webpack_require__(5);
 
@@ -13489,7 +13508,7 @@ const spawn = __webpack_require__(90).spawn;
 const packageData = __webpack_require__(5);
 const LeWindows = __webpack_require__(29);
 const LeUnix = __webpack_require__(47);
-const shared = __webpack_require__(3);
+const shared = __webpack_require__(4);
 
 /**
  * Generates a Transport object for Sendmail
@@ -13707,7 +13726,7 @@ module.exports = require("child_process");
 
 
 const packageData = __webpack_require__(5);
-const shared = __webpack_require__(3);
+const shared = __webpack_require__(4);
 const LeWindows = __webpack_require__(29);
 const LeUnix = __webpack_require__(47);
 
@@ -13856,7 +13875,7 @@ module.exports = SendmailTransport;
 
 
 const packageData = __webpack_require__(5);
-const shared = __webpack_require__(3);
+const shared = __webpack_require__(4);
 
 /**
  * Generates a Transport object for Sendmail
@@ -13952,7 +13971,7 @@ module.exports = JSONTransport;
 
 const EventEmitter = __webpack_require__(12);
 const packageData = __webpack_require__(5);
-const shared = __webpack_require__(3);
+const shared = __webpack_require__(4);
 const LeWindows = __webpack_require__(29);
 
 /**
@@ -22594,7 +22613,7 @@ module.exports = v4;
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = CheckEmailByKey;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_response_lib__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_keyVerification__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_keyVerification__ = __webpack_require__(3);
 
 
 function CheckEmailByKey(event, context) {
@@ -22616,7 +22635,7 @@ function CheckEmailByKey(event, context) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_response_lib__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_dynamodb_lib__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util_EmailService__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util_keyVerification__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util_keyVerification__ = __webpack_require__(3);
 
 
 
@@ -22648,7 +22667,7 @@ function SendCustomEmail(event, context) {
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = StoreOption;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_response_lib__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_keyVerification__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_keyVerification__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util_dynamodb_lib__ = __webpack_require__(1);
 
 
@@ -22689,7 +22708,7 @@ function StoreOption(event, context) {
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = StoreTimeOption;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_response_lib__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_keyVerification__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_keyVerification__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util_dynamodb_lib__ = __webpack_require__(1);
 
 
@@ -22731,7 +22750,7 @@ function StoreTimeOption(event, context) {
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = StoreHoliday;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_response_lib__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_keyVerification__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_keyVerification__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util_dynamodb_lib__ = __webpack_require__(1);
 
 
@@ -22771,8 +22790,50 @@ function StoreHoliday(event, context) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = StoreFriends;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_response_lib__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_keyVerification__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util_dynamodb_lib__ = __webpack_require__(1);
+
+
+
+function StoreFriends(event, context) {
+    var _a = JSON.parse(event.body), key = _a.key, friends = _a.friends;
+    console.log("Storing friends option", friends, "for key", key);
+    Object(__WEBPACK_IMPORTED_MODULE_1__util_keyVerification__["b" /* loadProfile */])(key).then(function (profile) {
+        var params = {
+            TableName: "ClubUsers",
+            AttributeUpdates: {
+                friends: friends ? {
+                    Action: "PUT",
+                    Value: friends
+                } : {
+                    Action: "DELETE"
+                }
+            },
+            Key: {
+                email: profile.email
+            }
+        };
+        return Object(__WEBPACK_IMPORTED_MODULE_2__util_dynamodb_lib__["a" /* makeDynamoCall */])("update", params);
+    }).then(function () {
+        // re-load the profile
+        return Object(__WEBPACK_IMPORTED_MODULE_1__util_keyVerification__["b" /* loadProfile */])(key);
+    }).then(function (profile) {
+        context.succeed(Object(__WEBPACK_IMPORTED_MODULE_0__util_response_lib__["b" /* success */])(profile));
+    }).catch(function (e) {
+        context.succeed(Object(__WEBPACK_IMPORTED_MODULE_0__util_response_lib__["a" /* failure */])(e));
+    });
+}
+
+
+/***/ }),
+/* 141 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = StoreUserDetails;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_profileUpdate__ = __webpack_require__(141);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_profileUpdate__ = __webpack_require__(142);
 
 function StoreUserDetails(event, context) {
     var _a = JSON.parse(event.body), key = _a.key, username = _a.username, surname = _a.surname;
@@ -22795,12 +22856,12 @@ function StoreUserDetails(event, context) {
 
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = profileUpdate;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__keyVerification__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__keyVerification__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dynamodb_lib__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__response_lib__ = __webpack_require__(2);
 var __assign = (this && this.__assign) || Object.assign || function(t) {
@@ -22831,13 +22892,13 @@ function profileUpdate(key, context, params) {
 
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = Turnout;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_response_lib__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_keyVerification__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_keyVerification__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util_dynamodb_lib__ = __webpack_require__(1);
 
 
@@ -22856,6 +22917,7 @@ function Turnout(event, context) {
                 username: profile.username,
                 surname: profile.surname,
                 option: profile.option,
+                friends: profile.friends,
                 time: profile.time
             };
         });
@@ -22870,7 +22932,7 @@ function Turnout(event, context) {
 
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -22916,12 +22978,12 @@ function ResendEmail(event, context) {
 
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = Unsubscribe;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_keyVerification__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util_keyVerification__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_dynamodb_lib__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util_response_lib__ = __webpack_require__(2);
 

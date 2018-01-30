@@ -7,7 +7,13 @@ import {TimeOption, userFriendlyName, UserProfile} from "../../common/UserProfil
 
 class Count extends React.Component<{ items: Array<any>, option: string }, any> {
     render() {
-        const count = this.props.items.filter(p => p.option == this.props.option).length;
+        const count = this.props.items
+            .filter(p => p.option == this.props.option)
+            .reduce((total: number, current) => {
+                const friends: number = current.option === "yes" && current.friends || 0;
+                return Number(total + 1) + Number(friends);
+            }, 0);
+
         return <span>{peopleCount(count)}</span>
     }
 }
@@ -26,44 +32,45 @@ export class Turnout extends React.Component<VerifiedComponentProps, any> {
         return this.state.turnout.filter((t: UserProfile) => t.option === filter).map((t: UserProfile, index: number) => (
             <div className="App-userbadge" key={filter + '-' + index}>
                 {userFriendlyName(t)}
+                {t.friends && t.option === "yes" && <span> + {t.friends}</span>}
             </div>
         ))
     }
 
     // not used
-    renderComingGroup() {
-        type GroupedProfiles = {
-            [index: string]: UserProfile[]
-        };
-
-        const groupedProfiles = this.state.turnout
-            .filter((t: any) => t.option === "yes")
-            .reduce((grouped: GroupedProfiles, profile: UserProfile) => {
-                const key = profile.time || "default";
-                if (!grouped[key]) {
-                    grouped[key] = [];
-                }
-                grouped[key].push(profile);
-                return grouped;
-            }, {});
-
-        return Object.keys(groupedProfiles)
-            .sort()
-            .map((group, groupIndex) => (
-                <div className="pure-g" key={"group" + groupIndex}>
-                    <div className="pure-u-2-5 pure-u-sm-1-5">
-                        <span className="App-timegroup">{group}</span>
-                    </div>
-                    <div className="pure-u-3-5 pure-u-sm-4-5">
-                        {
-                            groupedProfiles[group].map((profile: UserProfile, index: number) => (
-                                <div className="App-userbadge" key={"profile" + index}>{userFriendlyName(profile)}</div>
-                            ))
-                        }
-                    </div>
-                </div>
-            ))
-    }
+    // renderComingGroup() {
+    //     type GroupedProfiles = {
+    //         [index: string]: UserProfile[]
+    //     };
+    //
+    //     const groupedProfiles = this.state.turnout
+    //         .filter((t: any) => t.option === "yes")
+    //         .reduce((grouped: GroupedProfiles, profile: UserProfile) => {
+    //             const key = profile.time || "default";
+    //             if (!grouped[key]) {
+    //                 grouped[key] = [];
+    //             }
+    //             grouped[key].push(profile);
+    //             return grouped;
+    //         }, {});
+    //
+    //     return Object.keys(groupedProfiles)
+    //         .sort()
+    //         .map((group, groupIndex) => (
+    //             <div className="pure-g" key={"group" + groupIndex}>
+    //                 <div className="pure-u-2-5 pure-u-sm-1-5">
+    //                     <span className="App-timegroup">{group}</span>
+    //                 </div>
+    //                 <div className="pure-u-3-5 pure-u-sm-4-5">
+    //                     {
+    //                         groupedProfiles[group].map((profile: UserProfile, index: number) => (
+    //                             <div className="App-userbadge" key={"profile" + index}>{userFriendlyName(profile)}</div>
+    //                         ))
+    //                     }
+    //                 </div>
+    //             </div>
+    //         ))
+    // }
 
     render() {
         return this.state.ready && (

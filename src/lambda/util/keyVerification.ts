@@ -1,7 +1,7 @@
 import {makeDynamoCall} from "./dynamodb-lib";
 import {UserProfile} from "../../common/UserProfile";
 
-export const standardProjection="username, surname, email, #option, verificationKey, #roles, #time, holiday";
+export const standardProjection="username, surname, email, #option, verificationKey, #roles, #time, holiday, friends";
 export const expressionAttributeNames={
     '#option': 'option',
     '#roles': 'roles',

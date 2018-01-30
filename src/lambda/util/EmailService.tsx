@@ -37,7 +37,13 @@ const userBadge = {
 };
 
 function userbadge(p: UserProfile) {
-    return <Span style={userBadge} key={p.username}>{userFriendlyName(p)}</Span>
+    return <Span>
+        <Span style={userBadge} key={p.username}>
+            {userFriendlyName(p)}
+            {p.friends && p.option === "yes" && <Span> + {p.friends}</Span>}
+        </Span>
+        &nbsp;
+    </Span>
 }
 
 class Para extends React.Component<any, any> {
@@ -173,6 +179,11 @@ export class EmailService {
 
     static sendFinalEmail(profile: UserProfile, users: Array<UserProfile>) {
         const confirmed = users.filter(p => p.option === "yes");
+        const confirmedCount = confirmed.reduce((total: number, current: UserProfile) => {
+            const friends: number = current.friends || 0;
+            return Number(total + 1) + Number(friends);
+        }, 0);
+
         const denied = users.filter(p => p.option === "no");
         const title = "Backgammon this week... (final numbers)";
         // const title = confirmed.length > 3 ? "Backgammon this week... (final numbers)" :
@@ -181,7 +192,7 @@ export class EmailService {
         return sendEmail(title, profile,
             (<div>
                 <Para>
-                    There are {peopleCount(confirmed.length)} confirmed this week.
+                    There are {peopleCount(confirmedCount)} confirmed this week.
                 </Para>
                 {
                     confirmed.length > 0 && <Para>

@@ -20,6 +20,7 @@ export function CronRollUsers() {
                 AttributeUpdates: {
                     option: {Action: "DELETE"},
                     time: {Action: "DELETE"},
+                    friends: {Action: "DELETE"},
                     holiday: r.holiday ? {
                         Action: "PUT",
                         Value: r.holiday

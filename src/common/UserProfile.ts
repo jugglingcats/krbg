@@ -28,5 +28,6 @@ export type UserProfile = UserProfileRegistration & {
     roles: string[]
     time?: TimeOption,
     holiday?: number,
+    friends?: number,
     created: number
 }

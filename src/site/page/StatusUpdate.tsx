@@ -1,12 +1,11 @@
 import * as React from "react";
-import { observer } from "mobx-react";
-import { RouteComponentProps } from "react-router";
-import { Link } from "react-router-dom";
-import { VerifiedComponentProps } from "../component/KeyVerification";
-import { ScaleLoader } from "react-spinners";
-import { AttendanceOption } from "../../common/AttendanceOption";
-
-import { TimeOptionSelection } from "../component/TimeOptionSelection";
+import {observer} from "mobx-react";
+import {RouteComponentProps} from "react-router";
+import {Link} from "react-router-dom";
+import {VerifiedComponentProps} from "../component/KeyVerification";
+import {ScaleLoader} from "react-spinners";
+import {AttendanceOption} from "../../common/AttendanceOption";
+import {BringFriendRegion} from "../component/BringFriendRegion";
 
 type StatusUpdateProps = {
     option: AttendanceOption
@@ -54,8 +53,14 @@ export class StatusUpdate extends React.Component<VerifiedComponentProps & Route
                     {option === "no" && <span>Sorry you can't make it this week!</span>}
                 </p>
 
+{/*
                 {
-                    option === "yes" && <TimeOptionSelection controller={this.props.controller}/>}
+                    option === "yes" && <TimeOptionSelection controller={this.props.controller}/>
+                }
+*/}
+                {
+                    option == "yes" && <BringFriendRegion controller={this.props.controller}/>
+                }
                 <p>
                     <Link className="pure-button pure-button-primary" to={"/confirmed/" + this.props.match.params.key}>
                         See who else is coming

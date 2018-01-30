@@ -30,11 +30,11 @@ Resources:
           Properties:
             Path: /
             Method: get
-        ProxyApiGreedy:
-          Type: Api
-          Properties:
-            Path: /{proxy+}
-            Method: GET
+#        ProxyApiGreedy:
+#          Type: Api
+#          Properties:
+#            Path: /{proxy+}
+#            Method: GET
 
   GetManifest:
     Type: AWS::Serverless::Function
@@ -344,6 +344,23 @@ Resources:
           Type: Api
           Properties:
             Path: /api/storeHoliday
+            Method: post
+
+  PostStoreHoliday:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: build-api/handler.StoreFriends
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: nodejs6.10
+      Timeout: 10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /api/storeFriends
             Method: post
 
   PostStoreUserDetails:
