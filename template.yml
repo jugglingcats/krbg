@@ -346,7 +346,7 @@ Resources:
             Path: /api/storeHoliday
             Method: post
 
-  PostStoreHoliday:
+  PostStoreFriends:
     Type: AWS::Serverless::Function
     Properties:
       Handler: build-api/handler.StoreFriends
