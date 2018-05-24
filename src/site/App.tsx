@@ -14,17 +14,15 @@ import {Unsubscribed} from "./page/Unsubscribed";
 import {Admin} from "./page/Admin";
 import {Link} from "react-router-dom";
 
-export class ProfileLink extends React.Component<{verificationKey: string}, any> {
+export class ProfileLink extends React.Component<{ verificationKey: string }, any> {
     render() {
-        return <Link to={"/profile/"+this.props.verificationKey}>{this.props.children}</Link>
+        return <Link to={"/profile/" + this.props.verificationKey}>{this.props.children}</Link>
     }
 }
 
 // Note order of annotations is important!
-@inject("controller")
-@withRouter
-@observer
-export class App extends React.Component<any, any> {
+
+export const App = inject("controller")(withRouter(observer(class extends React.Component<any, any> {
     render() {
         if (this.props.controller.error) {
             console.log("CONTROLLER IN ERROR - SHOW ERROR DISPLAY");
@@ -44,4 +42,4 @@ export class App extends React.Component<any, any> {
             </div>
         );
     }
-}
+})));

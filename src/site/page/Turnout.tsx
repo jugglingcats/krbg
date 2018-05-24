@@ -29,12 +29,14 @@ export class Turnout extends React.Component<VerifiedComponentProps, any> {
     }
 
     renderGroup(filter: string | undefined) {
-        return this.state.turnout.filter((t: UserProfile) => t.option === filter).map((t: UserProfile, index: number) => (
-            <div className="App-userbadge" key={filter + '-' + index}>
-                {userFriendlyName(t)}
-                {t.friends && t.option === "yes" && <span> + {t.friends}</span>}
-            </div>
-        ))
+        return this.state.turnout
+            .filter((t: UserProfile) => t.option === filter)
+            .map((t: UserProfile, index: number) => (
+                <div className="App-userbadge" key={filter + '-' + index}>
+                    {userFriendlyName(t)}
+                    {t.friends && t.option === "yes" && <span> + {t.friends}</span>}
+                </div>
+            ))
     }
 
     // not used
@@ -90,9 +92,11 @@ export class Turnout extends React.Component<VerifiedComponentProps, any> {
                     </fieldset>
                 </form>
 
-                <p>There are {this.state.turnout.length} people on the email list but note that some regular players don't subscribe.</p>
+                <p>There are {this.state.turnout.length} people on the email list but note that some regular players
+                    don't subscribe.</p>
 
-                <p>If you need to update your status for this week, view your <ProfileLink verificationKey={this.props.match.params.key}>
+                <p>If you need to update your status for this week, view your <ProfileLink
+                    verificationKey={this.props.match.params.key}>
                     Profile</ProfileLink>.</p>
             </div>
         ) || <div>
