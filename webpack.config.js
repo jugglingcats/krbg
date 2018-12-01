@@ -6,11 +6,18 @@ var path = require('path');
  */
 
 module.exports = {
+    mode: "production",
     entry: './src/lambda/index.ts',
     target: 'node',
     module: {
-        loaders: [
-            {test: /\.ts(x?)$/, loader: 'ts-loader'}
+        rules: [
+            {
+                test: /\.ts(x?)$/,
+                loader: 'ts-loader',
+                options: {
+                    configFile: "webpack.tsconfig.json"
+                }
+            }
         ]
     },
     resolve: {

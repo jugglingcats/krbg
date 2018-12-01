@@ -17,9 +17,7 @@ export type AppState = {
     emailResendToken?: string
 };
 
-@inject("controller")
-@withRouter
-export class SignUp extends React.Component<ControllerProps & RouteComponentProps<any>, AppState> {
+class _SignUp extends React.Component<ControllerProps & RouteComponentProps<any>, AppState> {
     state: AppState = {
         username: "",
         email: "",
@@ -146,3 +144,5 @@ export class SignUp extends React.Component<ControllerProps & RouteComponentProp
         );
     }
 }
+
+export const SignUp=inject("controller")(withRouter(_SignUp));

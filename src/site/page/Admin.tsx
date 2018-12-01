@@ -3,8 +3,6 @@ import {VerifiedComponentProps} from "../component/KeyVerification";
 import {ScaleLoader} from "react-spinners";
 import {observer} from "mobx-react";
 import {ProfileLink} from "../App";
-import {Simulate} from "react-dom/test-utils";
-import input = Simulate.input;
 
 type AdminState = { emailText: string, allUsers: boolean };
 

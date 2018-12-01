@@ -4,7 +4,7 @@ import {inject} from "mobx-react";
 import {ControllerProps, VerifiedPageState} from "../AppController";
 import {ScaleLoader} from "react-spinners";
 
-type WrappedHigherOrderComponent<P, PHoc> = React.ComponentClass<P & PHoc> | React.SFC<P & PHoc>;
+type WrappedHigherOrderComponent<P, PHoc> = React.ComponentClass<P & PHoc> | React.FunctionComponent<P & PHoc>;
 
 export type ValidatorProps = {
     key: string
@@ -45,5 +45,5 @@ export function validatedComponent<P>(Component: WrappedHigherOrderComponent<P, 
                 <Component name={displayName} {...rest}/>
             );
         }
-    }));
+    }) as any);
 }

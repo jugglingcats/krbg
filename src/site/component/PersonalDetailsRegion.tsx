@@ -3,7 +3,7 @@ import {ControllerProps} from "../AppController";
 import {ScaleLoader} from "react-spinners";
 
 type PersonalDetailsRegionState = {
-    busy: boolean,
+    busy?: boolean,
     username?: string,
     surname?: string,
     saved?: boolean

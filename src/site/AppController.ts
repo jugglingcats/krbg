@@ -22,13 +22,13 @@ export class AppController {
     error: boolean = false;
 
     @observable
-    errorText: string;
+    errorText: string = "";
 
     @observable
-    busy: boolean;
+    busy: boolean = false;
 
     @observable
-    verified: VerifiedPageState;
+    verified: VerifiedPageState = {verified: false};
 
     private static doFetch(method: string, path: string, args: any): Promise<any> {
         const headers = new Headers();

@@ -2,29 +2,24 @@
   "name": "club",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "react-scripts-ts": "2.7.0"
-  },
   "scripts": {
-    "start": "cross-env PORT=3001 react-scripts-ts start",
+    "start": "cross-env PORT=3001 react-scripts start",
     "start-api": "sam local start-api --host 0.0.0.0 --env-vars debug-vars.json --skip-pull-image --docker-volume-basedir /c/Users/alfie/personal/krbg",
     "command": "sam local invoke --skip-pull-image --env-vars debug-vars.json --docker-volume-basedir /c/Users/alfie/personal/krbg",
     "watch-api": "webpack --watch",
-    "build": "rimraf ./build && cross-env GENERATE_SOURCEMAP=false react-scripts-ts build && webpack",
-    "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "build": "rimraf ./build && cross-env GENERATE_SOURCEMAP=false react-scripts build && webpack",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   },
   "devDependencies": {
     "@types/jest": "^21.1.2",
     "@types/jsonwebtoken": "^7.2.3",
-    "@types/node": "^8.0.32",
+    "@types/node": "^10.0.0",
     "@types/nodemailer": "^4.2.1",
-    "@types/react": "^16.0.9",
-    "@types/react-dom": "^16.0.0",
-    "@types/react-recaptcha": "^2.2.4",
-    "@types/react-router-dom": "^4.0.8",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@types/react-recaptcha": "latest",
+    "@types/react-router-dom": "latest",
     "aws-sdk": "^2.130.0",
     "cross-env": "^5.1.1",
     "jsonwebtoken": "^8.1.0",
@@ -32,13 +27,20 @@
     "mobx-react": "^4.3.3",
     "nodemailer": "^4.3.1",
     "purecss": "^1.0.0",
+    "react": "next",
+    "react-dom": "next",
     "react-html-email": "^3.0.0",
     "react-recaptcha": "^2.3.5",
-    "react-router-dom": "^4.2.2",
+    "react-router-dom": "next",
+    "react-scripts": "2.1.1",
     "react-spinners": "^0.2.1",
     "rimraf": "^2.6.2",
-    "ts-loader": "^2.3.7",
-    "webpack": "^3.6.0"
+    "ts-loader": "^5.3.1",
+    "typescript": "^3.1.6",
+    "webpack-cli": "^3.1.2"
   },
-  "proxy": "http://localhost:3000"
+  "proxy": "http://localhost:3000",
+  "browserslist": [
+    ">0.1%"
+  ]
 }

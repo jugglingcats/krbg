@@ -20,11 +20,7 @@ export class ProfileLink extends React.Component<{verificationKey: string}, any>
     }
 }
 
-// Note order of annotations is important!
-@inject("controller")
-@withRouter
-@observer
-export class App extends React.Component<any, any> {
+class _App extends React.Component<any, any> {
     render() {
         if (this.props.controller.error) {
             console.log("CONTROLLER IN ERROR - SHOW ERROR DISPLAY");
@@ -45,3 +41,8 @@ export class App extends React.Component<any, any> {
         );
     }
 }
+// Note order of annotations is important!
+// @inject("controller")
+// @withRouter
+// @observer
+export const App=inject("controller")(withRouter(observer(_App)));

@@ -4,6 +4,7 @@ import {BrowserRouter as Router} from "react-router-dom";
 import {AppController} from "./site/AppController";
 import {Provider} from "mobx-react";
 import {App} from "./site/App";
+import * as serviceWorker from './serviceWorker';
 
 import 'purecss/build/pure.css';
 import 'purecss/build/grids-responsive.css'
@@ -22,4 +23,5 @@ ReactDOM.render(
     </Provider>,
     document.getElementById('root') as HTMLElement
 );
-// registerServiceWorker();
+
+serviceWorker.unregister();
