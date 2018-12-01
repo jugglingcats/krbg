@@ -8,8 +8,11 @@ export enum TimeOption {
 }
 
 export function userFriendlyName(profile: UserProfile) {
-    console.log("Build user name for ",profile.username,"+[",profile.surname+"]");
+    // console.log("Build user name for ",profile.username,"+[",profile.surname+"]");
 
+    if ( profile.surname && profile.useSurname ) {
+        return profile.username + " " + profile.surname;
+    }
     if (profile.surname && profile.surname.length) {
         return profile.username + " " + profile.surname.charAt(0);
     }
@@ -29,5 +32,6 @@ export type UserProfile = UserProfileRegistration & {
     time?: TimeOption,
     holiday?: number,
     friends?: number,
-    created: number
+    created: number,
+    useSurname?: boolean
 }

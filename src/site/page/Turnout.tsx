@@ -90,7 +90,7 @@ export class Turnout extends React.Component<VerifiedComponentProps, any> {
                     </fieldset>
                 </form>
 
-                <p>There are {this.state.turnout.length} people on the email list but note that some regular players don't subscribe.</p>
+                <p>There are currently {this.state.turnout.length} people on the email list.</p>
 
                 <p>If you need to update your status for this week, view your <ProfileLink verificationKey={this.props.match.params.key}>
                     Profile</ProfileLink>.</p>

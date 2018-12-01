@@ -95,7 +95,7 @@ class StatusUpdateLink extends React.Component<{ status: AttendanceOption, profi
 function sendEmail(subject: string, profile: UserProfile, body: any) {
     return new Promise((resolve, reject) => {
         transport.sendMail({
-            from: "Alfie Kirkpatrick [Backgammon] <bg@akirkpatrick.com>",
+            from: "Alfie Kirkpatrick [Backgammon] <alfie@akirkpatrick.com>",
             to: profile.email,
             subject: subject,
             text: "Please email alfie@akirkpatrick.com if this email is wrongly formatted",
@@ -109,7 +109,7 @@ function sendEmail(subject: string, profile: UserProfile, body: any) {
 
                     <Para>
                         You can manage your settings or unsubscribe at any time by viewing your&nbsp;
-                        <ProfileLink profile={profile}>Profile</ProfileLink>. Please don't reply to this email unless there's an issue.
+                        <ProfileLink profile={profile}>Profile</ProfileLink>.
                     </Para>
                 </Email>
             )
@@ -142,7 +142,7 @@ export class EmailService {
             (<div>
                 <Para>
                     Welcome to the Kensal Rise Backgammon Club. We send out regular emails to club members to find out who plans to come
-                    each week.
+                    each week. You're encouraged to use the voting buttons in the emails to let us know if you're coming, but this is not required!
                 </Para>
                 <Para>
                     The club meets each week on Thursday at The Island in Kensal Rise from 8.30pm.
@@ -170,7 +170,7 @@ export class EmailService {
                 </Para>
                 <Para>
                     Please let us know if you can make it so we can confirm final numbers. If not enough people
-                    confirm we might cancel the event this week.
+                    confirm we might have to cancel.
                 </Para>
                 <OptionLinks profile={profile}/>
             </div>)
@@ -186,8 +186,6 @@ export class EmailService {
 
         const denied = users.filter(p => p.option === "no");
         const title = "Backgammon this week... (final numbers)";
-        // const title = confirmed.length > 3 ? "Backgammon this week... (final numbers)" :
-        //     "Backgammon this week... only " + confirmed.length + " confirmed!";
 
         return sendEmail(title, profile,
             (<div>
@@ -212,11 +210,6 @@ export class EmailService {
                 <Para>
                     <TurnoutLink profile={profile}>View up-to-date status and arrival times online</TurnoutLink>
                 </Para>
-                {/*
-                <Para>
-                    There are {users.length} people on the email list but some regular players don't subscribe.
-                </Para>
-*/}
                 {
                     profile.option && (<div>
                         <Para>
