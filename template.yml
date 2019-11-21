@@ -19,7 +19,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: build-api/handler.get
-      Runtime: nodejs6.10
+      Runtime: nodejs12.x
       Timeout: 10
       Role:
         Fn::ImportValue:
@@ -40,7 +40,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: build-api/handler.manifest
-      Runtime: nodejs6.10
+      Runtime: nodejs12.x
       Timeout: 10
       Role:
         Fn::ImportValue:
@@ -56,7 +56,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: build-api/handler.Turnout
-      Runtime: nodejs6.10
+      Runtime: nodejs12.x
       Timeout: 10
       Role:
         Fn::ImportValue:
@@ -75,7 +75,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: build-api/handler.CronBeginWeek
-      Runtime: nodejs6.10
+      Runtime: nodejs12.x
       Timeout: 30
       Role:
         Fn::ImportValue:
@@ -88,7 +88,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: build-api/handler.BeginWeek
-      Runtime: nodejs6.10
+      Runtime: nodejs12.x
       Timeout: 10
       Role:
         Fn::ImportValue:
@@ -107,7 +107,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: build-api/handler.CronRollUsers
-      Runtime: nodejs6.10
+      Runtime: nodejs12.x
       Timeout: 30
       Role:
         Fn::ImportValue:
@@ -117,7 +117,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: build-api/handler.RollUsers
-      Runtime: nodejs6.10
+      Runtime: nodejs12.x
       Timeout: 30
       Role:
         Fn::ImportValue:
@@ -134,7 +134,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: build-api/handler.CronSendReminderEmail
-      Runtime: nodejs6.10
+      Runtime: nodejs12.x
       Timeout: 30
       Role:
         Fn::ImportValue:
@@ -147,7 +147,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: build-api/handler.SendReminder
-      Runtime: nodejs6.10
+      Runtime: nodejs12.x
       Timeout: 10
       Role:
         Fn::ImportValue:
@@ -166,7 +166,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: build-api/handler.CronSendFinalEmail
-      Runtime: nodejs6.10
+      Runtime: nodejs12.x
       Timeout: 30
       Role:
         Fn::ImportValue:
@@ -179,7 +179,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: build-api/handler.SendFinalEmail
-      Runtime: nodejs6.10
+      Runtime: nodejs12.x
       Timeout: 10
       Role:
         Fn::ImportValue:
@@ -198,7 +198,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: build-api/handler.SendCustomEmail
-      Runtime: nodejs6.10
+      Runtime: nodejs12.x
       Timeout: 30
       Role:
         Fn::ImportValue:
@@ -218,7 +218,7 @@ Resources:
     Properties:
       Handler: build-api/handler.CheckEmailByKey
       Policies: AmazonDynamoDBFullAccess
-      Runtime: nodejs6.10
+      Runtime: nodejs12.x
       Timeout: 10
       Role:
         Fn::ImportValue:
@@ -235,7 +235,7 @@ Resources:
     Properties:
       Handler: build-api/handler.Signup
       Policies: AmazonDynamoDBFullAccess
-      Runtime: nodejs6.10
+      Runtime: nodejs12.x
       Timeout: 10
       Role:
         Fn::ImportValue:
@@ -259,7 +259,7 @@ Resources:
     Properties:
       Handler: build-api/handler.ResendEmail
       Policies: AmazonDynamoDBFullAccess
-      Runtime: nodejs6.10
+      Runtime: nodejs12.x
       Timeout: 10
       Role:
         Fn::ImportValue:
@@ -280,7 +280,7 @@ Resources:
     Properties:
       Handler: build-api/handler.Unsubscribe
       Policies: AmazonDynamoDBFullAccess
-      Runtime: nodejs6.10
+      Runtime: nodejs12.x
       Timeout: 10
       Role:
         Fn::ImportValue:
@@ -300,7 +300,7 @@ Resources:
     Properties:
       Handler: build-api/handler.StoreOption
       Policies: AmazonDynamoDBFullAccess
-      Runtime: nodejs6.10
+      Runtime: nodejs12.x
       Timeout: 10
       Role:
         Fn::ImportValue:
@@ -317,7 +317,7 @@ Resources:
     Properties:
       Handler: build-api/handler.StoreTimeOption
       Policies: AmazonDynamoDBFullAccess
-      Runtime: nodejs6.10
+      Runtime: nodejs12.x
       Timeout: 10
       Role:
         Fn::ImportValue:
@@ -334,7 +334,7 @@ Resources:
     Properties:
       Handler: build-api/handler.StoreHoliday
       Policies: AmazonDynamoDBFullAccess
-      Runtime: nodejs6.10
+      Runtime: nodejs12.x
       Timeout: 10
       Role:
         Fn::ImportValue:
@@ -351,7 +351,7 @@ Resources:
     Properties:
       Handler: build-api/handler.StoreFriends
       Policies: AmazonDynamoDBFullAccess
-      Runtime: nodejs6.10
+      Runtime: nodejs12.x
       Timeout: 10
       Role:
         Fn::ImportValue:
@@ -368,7 +368,7 @@ Resources:
     Properties:
       Handler: build-api/handler.StoreUserDetails
       Policies: AmazonDynamoDBFullAccess
-      Runtime: nodejs6.10
+      Runtime: nodejs12.x
       Timeout: 10
       Role:
         Fn::ImportValue:
