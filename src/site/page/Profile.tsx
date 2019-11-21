@@ -21,10 +21,12 @@ export class ProfilePage extends React.Component<VerifiedComponentProps> {
                     Hello {username}, this is your Kensal Rise Backgammon profile
                 </p>
 
+{/*
                 <p>
                     The club meets Thursdays at The Island pub in Kensal Rise. Regular start time is 8.30pm.
                 </p>
 
+*/}
                 <div>
                     <StatusSelectionRegion controller={controller}/>
 

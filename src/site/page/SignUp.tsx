@@ -93,7 +93,7 @@ class _SignUp extends React.Component<ControllerProps & RouteComponentProps<any>
         return (
             <div>
                 <p className="App-intro">
-                    Welcome to Kensal Rise Backgammon. The club meets every Thursday at The Island pub from 8.30pm.
+                    Welcome to Kensal Rise Backgammon. The club currently doesn't have a regular place and time but we'll be sending out emails about ad-hoc events and when it properly starts up again.
                 </p>
                 <p>
                     To register your interest please enter your name and email below. We send weekly reminder emails to members.

@@ -141,11 +141,11 @@ export class EmailService {
         return sendEmail("Welcome to Kensal Rise Backgammon!", profile,
             (<div>
                 <Para>
-                    Welcome to the Kensal Rise Backgammon Club. We send out regular emails to club members to find out who plans to come
+                    Welcome to the Kensal Rise Backgammon Club. When the club is running we send out regular emails to club members to find out who plans to come
                     each week. You're encouraged to use the voting buttons in the emails to let us know if you're coming, but this is not required!
                 </Para>
                 <Para>
-                    The club meets each week on Thursday at The Island in Kensal Rise from 8.30pm.
+                    The club is not currently meeting at regular intervals. Look for updates in your email.
                 </Para>
             </div>)
         );
