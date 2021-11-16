@@ -20,7 +20,7 @@
     "@types/react-dom": "latest",
     "@types/react-recaptcha": "latest",
     "@types/react-router-dom": "latest",
-    "aws-sdk": "^2.130.0",
+    "aws-sdk": "^2.814.0",
     "cross-env": "^5.1.1",
     "jsonwebtoken": "^8.1.0",
     "mobx": "^3.3.1",
